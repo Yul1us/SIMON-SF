@@ -29,3 +29,26 @@ WebAssembly: Para ejecutar código .NET en el navegador.
 
 
 ---
+# Clonar el repositorio
+git clone https://github.com/Yul1us/SIMON-SF.git
+cd SIMON-SF
+# Crear una nueva rama
+git checkout -b nombre-de-la-rama
+# Realizar cambios y confirmar
+git add .
+git commit -m "Descripción de los cambios realizados"
+# Sincronizar con la rama principal
+git checkout master
+git pull origin master
+git checkout nombre-de-la-rama
+git merge master
+# Resolver conflictos (si es necesario)
+git add .
+git commit -m "Resolver conflictos"
+# Subir cambios al repositorio remoto
+git push origin nombre-de-la-rama
+# Mantener la rama principal actualizada
+git checkout master
+git pull origin master
+Siguiendo estas simples recomendaciones, podremos trabajar de manera colaborativa y eficiente en
+el proyecto SIMON SF -> en Blazor y WebAssembly
