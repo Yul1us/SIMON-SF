@@ -1,0 +1,23 @@
+﻿@page "/claims-list"
+
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
+
+
+<PageTitle>Auth</PageTitle>
+
+<h1>Lista de Reclamaciones</h1>
+
+<AuthorizeView>
+    Hello @context.User.Identity?.Name!
+</AuthorizeView>
+<AuthorizeView Roles="Administrador">
+    You are a admin
+</AuthorizeView>
+<AuthorizeView Roles="Cliente">
+    You are a Client
+</AuthorizeView>
+<AuthorizeView Roles="Vendedor">
+    You are a Seller
+</AuthorizeView>

@@ -1,0 +1,603 @@
+﻿@* Directiva de Página *@
+@page "/orderDetails/{id:int}"
+@using Blazor.SIMONStore.Client.Models
+@using Microsoft.AspNetCore.Authorization
+@using Shared
+@page "/orderDetails"
+@* Inyección de servicios *@
+@inject IProductCategoryService ProductCategoryService
+@inject IProductService ProductService
+@inject ICostumerService ClientService
+@inject IOrderService OrderService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject ISellerService SellerServices
+@* Seguridad para la página *@
+@attribute [Authorize]
+
+<p class="text-danger">@Message</p>
+
+@if (clients != null && Order != null)
+{
+    <EditForm Model="@Order" OnValidSubmit="SaveOrder" class="mt-4">
+
+        <div class="card shadow-lg">
+            <h5 class="card-header text-center bg-danger text-white">Detalles de la Orden</h5>
+
+
+            <div class="card-body">
+                <div class="container">
+                            <DataAnnotationsValidator />
+                             <ValidationSummary />
+                    @* Fila 1: Estado y Botones *@
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-6 text-center">
+                            @if (Order.Status == 0)
+                            {
+                                <i class="bi bi-send text-primary fs-3">&nbsp;Enviado</i>
+                            }
+                            @if (Order.Status == 1)
+                            {
+                                <i class="bi bi-gear-fill text-secondary fs-3">&nbsp;En Proceso</i>
+                            }
+                            @if (Order.Status == 2)
+                            {
+                                <i class="bi bi-check2 text-success fs-3">&nbsp;Aprobado</i>
+                            }
+                            @if (Order.Status == 3)
+                            {
+                                <i class="bi bi-truck text-warning fs-3">&nbsp;Despachado</i>
+                            }
+                            @if (Order.Status == 4)
+                            {
+                                <i class="bi bi-cash text-success fs-3">&nbsp;Facturado</i>
+                            }
+                        </div>
+
+                        <div class="col-md-6 text-center">
+                            <AuthorizeView Roles="Administrador,Coordinador">
+                                <Authorized Context="authContext">
+                                    <button type="button" class="btn btn-success" disabled="@((Order.Status > 2))" @onclick="SaveOrder">Guardar</button>
+                                    <button type="button" class="btn btn-secondary ms-2" @onclick="Cancel">Cancelar</button>
+                                </Authorized>
+                            </AuthorizeView>
+
+
+                            <AuthorizeView Roles="Vendedor">
+                                <Authorized Context="authVendedorContext">
+                                    <button type="button" class="btn btn-success" disabled="@((Order.Status > 2))" @onclick="SaveOrderVendedor">Guardar</button>
+                                    <button type="button" class="btn btn-secondary ms-2" @onclick="CancelVendedor">Cancelar</button>
+                                </Authorized>
+                            </AuthorizeView>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <p>Fecha: @Order.Fecha_Dia?.ToString("dd/MM/yyyy")</p>
+                    <p>Tasa: @Order.Tasa_Cambio</p>
+                    <AuthorizeView Roles="Administrador">
+                        <Authorized Context="authContext">
+                            @if (cliente is not null)
+                            {
+                                <div class="info-box mb-3">
+                                    <p><strong>Tipo de Precio:</strong> @cliente.Nombre_Tipo_Precio</p>
+                                    <p><strong>Tipo de Cliente:</strong> @cliente.Tipo_Cliente</p>
+                                </div>
+                            }
+                        </Authorized>
+                    </AuthorizeView>
+
+                    <style>
+                        .info-box {
+                            background-color: rgba(255, 255, 0, 0.3); /* Amarillo medio transparente */
+                            padding: 15px; /* Espaciado interno */
+                            border-radius: 5px; /* Bordes redondeados */
+                            border: 1px solid #ccc; /* Borde suave */
+                            width: 100%; /* Abarca todo el ancho */
+                            box-sizing: border-box; /* Incluye padding en el tamaño total */
+                        }
+                    </style>
+
+                   
+                  
+                    @* Fila 2: Información principal de la orden *@
+                    <div class="row mb-4">
+                        <div class="d-flex">
+                            <div class="me-3" style="flex: 1;">
+                                <label for="orderNumber" class="form-label">Número de Orden</label>
+                                <InputNumber id="orderNumber" class="form-control" readonly="readonly" @bind-Value="@Order.OrderNumber" />
+                            </div>
+                            <div class="me-3" style="flex: 1;">
+                                <label for="orderSimonNumber" class="form-label">Número Simon</label>
+                                <InputNumber id="orderSimonNumber" class="form-control" readonly="readonly" @bind-Value="@Order.OrderNumberSIMONId" />
+                            </div>
+                         
+                        </div>
+                        <div class="me-3" style="flex: 1;">
+                            <label for="orderDate" class="form-label">Fecha de la Orden</label>
+                       @*      <input type="date" @bind="Order.OrderDate" @onchange="OnDateChanged" /> *@
+                            <InputDate id="orderDate" class="form-control" @bind-Value="@Order.OrderDate" />
+                        </div>
+                    </div>
+
+            
+
+                    @* Fila 3: Selección de Cliente *@
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <label for="clientSelect" class="form-label">Cliente</label>
+                            <div class="d-flex align-items-center">
+                                <InputSelect id="clientSelect" class="form-control" @onchange="OnClientChanged" @bind-Value="@Order.ClientId" disabled>
+                                    @foreach (var item in clients)
+                                    {
+                                        <option value="@item.Id">@(item.TxtApellidos)</option>
+                                    }
+                                </InputSelect>
+
+
+                                <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Primary" @onclick="AddClient" class="ms-2" Disabled="@(Order.Status> 2)"  />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Fila 4: Fecha de Entrega y Total *@
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="deliveryDate" class="form-label">Fecha de Entrega</label>
+                            <InputDate id="deliveryDate" class="form-control" @bind-Value="@Order.DeliveryDate" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="total" class="form-label">Total</label>
+
+                            <input id="total" type="text" class="form-control" readonly="readonly" value="@total.ToString("N2", new System.Globalization.CultureInfo("es-ES")) $" />
+                        </div>
+                    </div>
+
+                    <InputTextArea @bind-Value="@Order.Comentario" class="form-control mt-3 mb-3"></InputTextArea>
+
+
+                    @* Fila 5: Botón para agregar productos *@
+                    @if (Order.ClientId is null)
+                {
+                        <div class="row mb-4 text-center">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-secondary" @onclick="AddProduct" disabled="true">Agregar Producto</button>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="row mb-4 text-center">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-secondary" @onclick="AddProduct" disabled="@((Order.Status > 2))">Agregar Producto</button>
+                            </div>
+                        </div>
+                    }
+             
+
+                    @* Tabla de productos *@
+                    @if (Order.Products != null && Order.Products.Any())
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                <MudTable Items="@Order.Products" Hover="true" Striped="true" Bordered="true" Dense="true">
+                                    <ToolBarContent>
+                                        <MudText Typo="Typo.h6">Productos</MudText>
+                                    </ToolBarContent>
+                                    <HeaderContent>
+                                        <MudTh>Producto</MudTh>
+                                        <MudTh>Precio</MudTh>
+                                        <MudTh>Cantidad</MudTh>
+                                        <MudTh>Unidad</MudTh>
+                                        <MudTh>Cantidad De Unidad</MudTh>
+                                        <MudTh>Sub-Total</MudTh>
+                                        <MudTh></MudTh>
+                                    </HeaderContent>
+                                    <RowTemplate Context="ProductContext">
+                                        <MudTd DataLabel="Producto">@ProductContext.Name</MudTd>
+                                        <MudTd DataLabel="Precio">@(ProductContext.Price.ToString("N2", new System.Globalization.CultureInfo("es-ES")))</MudTd>
+                                        <MudTd DataLabel="Cantidad">@ProductContext.Quantity </MudTd>
+
+
+                                        <MudTd DataLabel="Unidad">@ProductContext.TxtUnidadMedida</MudTd>
+                                        @if (ProductContext.FacturaPor == 0)
+                                        {
+                                            <MudTd DataLabel="Cantidad De Unidad">@(ProductContext.Quantity)</MudTd>
+                                        }
+                                        else
+                                        {
+                                            <MudTd DataLabel="Cantidad De Unidad">@(ProductContext.promedio_peso * ProductContext.Quantity)  </MudTd>
+                                        }
+                                        @if (ProductContext.FacturaPor == 0)
+                                        {
+                                            <MudTd DataLabel="Sub-Total">@(((decimal)(ProductContext.Quantity * ProductContext.Price)).ToString("N2", new System.Globalization.CultureInfo("es-ES"))) $</MudTd>
+                                        }
+                                        else
+                                        {
+                                            <MudTd DataLabel="Sub-Total">
+                                                @(((decimal)(ProductContext.Quantity * (decimal?)ProductContext.promedio_peso * ProductContext.Price)).ToString("N2", new System.Globalization.CultureInfo("es-ES")))
+                                            </MudTd>
+                                        }
+
+                                        <MudTd DataLabel="">
+                                            @if (Order.Status > 2)
+                                            {
+                                                <MudFab OnClick="@(() => RemoveProduct(ProductContext.Id) )"
+                                                        Color="Color.Secondary"
+                                                        diasable="true"
+                                                        StartIcon="@Icons.Material.Filled.Delete"
+                                                        IconSize="Size.Small"
+                                                        Disabled>
+                                                </MudFab>
+
+
+                                            }
+                                            else
+                                            {
+                                                <MudFab OnClick="@(() => RemoveProduct(ProductContext.Id) )"
+                                                        Color="Color.Secondary"
+                                                        StartIcon="@Icons.Material.Filled.Delete"
+                                                        IconSize="Size.Small">
+                                                </MudFab>
+                                            }
+
+
+
+
+                                        </MudTd>
+                                    </RowTemplate>
+                                </MudTable>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+else
+{
+    <div class="text-center mt-5">
+        <p class="text-muted">Cargando datos, por favor espere...</p>
+    </div>
+}
+
+<style>
+    .form-label {
+        font-weight: bold;
+    }
+</style>
+<style>
+    .btn-refresh {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+        .btn-refresh:hover {
+            background-color: #0056b3; /* Azul más oscuro */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: scale(1.05);
+        }
+
+        .btn-refresh i {
+            margin-right: 0.5rem;
+        }
+</style>
+@code {
+    //Declaracion de las Variables...
+    // Debemos binder un objeto
+    public Order Order;
+    //Colecion de Categorias -> ProductCategory
+    //public IEnumerable<ProductCategory> productCategories;
+    //Colecion de Categorias -> Product
+    //public IEnumerable<Product> products;
+    //Colecion de Clientes -> Client
+    private Tasa tasa;
+  
+
+    public IEnumerable<Costumer> clients;
+    public decimal total { get; set; }
+    // MulticastNotSupportedException si ocurre algún error
+    public string Message { get; set; }
+    //Para los Productos
+    //public int productId { get; set; }
+
+    //Capturamos el Parametro para hacer Edicion en la Orden
+    [Parameter] public int id { get; set; }
+
+    //Aca se sobreescribirá la inicialización de la pagina.
+    //Para cargar e inicializar Order y la Lista de Productos
+  
+    public string email { get; set; }
+    public Costumer cliente;
+    public Seller seller { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            if (user.Identity.IsAuthenticated)
+            {
+                email = user.Identity.Name ?? "Email no disponible";
+            
+
+            }
+            else
+            {
+                email = "No autenticado";
+            }
+            //Chequear si el Parametro id es >0 para buscar en BD la Orden.
+            //Viene o depende del Servicio [OrderDetails -> GetDetail]
+            if (id > 0)
+            {
+                Order = await OrderService.GetDetails(id);
+                cliente = await ClientService.GetDetails(Order.ClientId);
+                total = Order.Total;
+            }
+            else
+            {
+                //En este Contructor se inicializan las Variables
+                //Hay que asignar valores x defecto, para que cuando la pagina cargue por primera vez tenga un valor
+                Order = new Order()
+                    {
+                        //Para tener el proximo valor de la Orden...
+                        OrderNumber = await OrderService.GetNextNumber(),
+                        ProductCategoryId = 1,
+                        OrderDate = DateTime.Today,
+                        DeliveryDate = DateTime.Today.AddDays(7)
+                    };
+                //productCategories = await ProductCategoryService.GetProductCategories();
+                //Trae los Productos de la Categoria
+                //await LoadProducts(Order.ProductCategoryId);
+                total = Order.Total;
+                tasa = await OrderService.GetTasa(Order.Fecha_Dia);
+                Order.Tasa_Cambio = tasa.Valor;
+                Order.Fecha_Dia = tasa.Dia;
+            }
+
+
+
+            //Trae los Clientes de la tabla Clients
+            
+            clients = await ClientService.GetAll();
+        }
+        catch (Exception e)
+        {
+            Message = "There was an error..." + e.Message;
+        }
+
+         Order.PropertyChanged += (sender, args) =>
+       {
+           if (args.PropertyName == nameof(Order.OrderDate))
+           {
+               Console.WriteLine($"Fecha cambiada a: {Order.OrderDate}");
+               RefreshTasa(Order.OrderDate);
+           
+               // Aquí puedes realizar cualquier acción adicional
+           }
+       };
+
+    }
+
+    //Para implementar los Dropdown
+    // protected async Task ProductCategoryHasChanged(int productCategoryId)
+    // {
+    //Aca la Idea es cargar los Productos... luego que se dispara el evento Changed ProductCategoryId...
+    // ValueExpression="@(() => Order.ProductCategoryId)" Es el Valor que se pasa.... a esta metodo...
+    //Order.ProductCategoryId = productCategoryId;
+
+    //Validamos que tenga algo...
+    //if (Order.ProductCategoryId > 0)
+    //{
+    //Trae los Productos de la Categoria
+    //await LoadProducts(Order.ProductCategoryId);
+    //}
+    // }
+
+    //Finalmente el que carga los Productos en un metodo privado...
+    // private async Task LoadProducts(int productCategoryId)
+    // {
+    //Llama al Servicio... para cargar los Productos
+    //     products = await ProductService.GetByCategory(productCategoryId);
+    //     Console.WriteLine("productCategoryId" + productCategoryId);
+    // }
+
+
+    protected async Task SaveOrder()
+    {
+        var cliente = clients.FirstOrDefault(b => b.Id == Order.ClientId);
+        Order.NombreCliente = cliente.TxtApellidos;
+        Order.IdVendedor = cliente.Num_Vendedor;
+        Order.IdTpCliente = cliente.Num_Tipo_Cliente;
+        Order.IdTpPrecio = cliente.Tipo_Precio;
+        Order.RIFCliente = cliente.TxtCedula;
+        Order.Status = 0;
+        Order.SIMONIdCliente = cliente.Id;
+        Order.Email = email;
+        Order.Total = total;
+
+ 
+        Order.id_moneda_cambio = tasa.Id;
+        await OrderService.SaveOrder(Order);
+        NavigateToHome();
+    }
+    protected async Task SaveOrderVendedor()
+    {
+        var cliente = clients.FirstOrDefault(b => b.Id == Order.ClientId);
+        Order.NombreCliente = cliente.TxtApellidos;
+        Order.IdVendedor = cliente.Num_Vendedor;
+        Order.IdTpCliente = cliente.Num_Tipo_Cliente;
+        Order.IdTpPrecio = cliente.Tipo_Precio;
+        Order.RIFCliente = cliente.TxtCedula;
+        Order.Status = 0;
+        Order.SIMONIdCliente = cliente.Id;
+        Order.Email = email;
+        Order.Total = total;
+        await OrderService.SaveOrder(Order);
+        NavigationManager.NavigateTo("/order-list/vendedor");
+    }
+
+
+    //Para movernos usamos Navigation.
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/order-list");
+    }
+
+    protected void Cancel()
+    {
+        NavigateToHome();
+    }
+
+    protected void CancelVendedor()
+    {
+        NavigationManager.NavigateTo("/order-list/vendedor");
+    }
+    //Para que funcione el Pop Pup
+    protected async Task AddProduct()
+    {
+        //Se le pasa el Componente de Blazor donde colocamos todo para ingresar el producto... -> "ProductDetails"
+        //Se envia los parametros por el -> [CascadingParameter] del Componente -> ProductDetalis
+        var parameters = new DialogParameters<ProductDetails> { { x => x.Server, Order.ClientId } };
+        var dialog = await DialogService.ShowAsync<ProductDetails>("ProductDetails", parameters);
+
+
+        var result = await dialog.Result;
+        // Si el usuario no Cancelo... el Formulario Pop Pup
+        if (!result.Canceled)
+        {
+            var product = (Product)result.Data;
+    
+            @if (product.FacturaPor == 0)
+            {
+                total = total + product.Quantity*product.Price;
+
+            }
+            else
+            {
+                total = total + (product.Quantity * (decimal)product.promedio_peso * product.Price);
+            }
+
+
+            if (Order.Products == null)
+            {
+                Order.Products = new List<Product>();
+            }
+
+            Order.Products.Add(product);
+
+        }
+    }
+
+    //Para Eliminar un Producto de un orden que no se ha guardado...
+    protected async Task RemoveProduct(int productId)
+    {
+        decimal total1;
+        var product = Order.Products.Find(p => p.Id == productId);
+
+        @if (product.FacturaPor == 0)
+        {
+             total1 =  product.Quantity * product.Price;
+
+        }
+        else
+        {
+             total1 =  (product.Quantity * (decimal)product.promedio_peso * product.Price);
+        }
+        total = total - total1;
+        //Con LinkQ Removemos
+        Order.Products.RemoveAll(p => p.Id == productId);
+        //Aca se usa la notificacion de MudBlazor llamada -> SnackBar
+        Snackbar.Add("Product removed...", Severity.Error, a => a.VisibleStateDuration = 200);
+
+    }
+
+
+
+    protected async Task AddClient()
+    {
+        //Se le pasa el Componente de Blazor donde colocamos todo para ingresar el producto... -> "ProductDetails"
+        //Se envia los parametros por el -> [CascadingParameter] del Componente -> ProductDetalis
+
+        var dialog = DialogService.Show<ClientDetails>("ClienteDetails");
+        var result = await dialog.Result;
+        // Si el usuario no Cancelo... el Formulario Pop Pup
+        if (!result.Canceled)
+        {
+            cliente = (Costumer)result.Data;
+
+
+            Order.ClientId = cliente.Id;
+            Order.IdTpCliente = cliente.Num_Tipo_Cliente;
+            Order.IdTpPrecio = cliente.Tipo_Precio;
+            Order.Products?.Clear();
+            total = 0;
+
+        }
+
+
+
+
+    }
+    private void OnClientChanged(ChangeEventArgs e)
+    {
+        // El nuevo valor del cliente seleccionado
+
+
+        // Lógica que deseas realizar cuando el cliente cambia
+        Console.WriteLine($"El cliente seleccionado cambió a");
+
+        Order.Products.Clear();
+        // Si necesitas actualizar algo en el modelo
+
+    }
+    private void OnDateChanged(ChangeEventArgs e)
+    {
+        // Imprimir "Hola Mundo" en la consola
+        Console.WriteLine("Hola Mundo");
+
+        // Lógica adicional si es necesario
+    }
+
+
+    protected async Task ProductHasChanged( DateTime fecha )
+    {
+
+        Console.WriteLine(Order.OrderDate);
+        tasa = await OrderService.GetTasa(Order.OrderDate);
+        Order.Tasa_Cambio = tasa.Valor;
+        Order.Fecha_Dia = tasa.Dia;
+
+    }
+    private async Task RefreshTasa(DateTime fecha)
+    {
+        try
+        {
+            Console.WriteLine(fecha);
+            tasa = await OrderService.GetTasa(fecha);
+            Order.Tasa_Cambio = tasa.Valor;
+            Order.Fecha_Dia = tasa.Dia;
+            Console.WriteLine(tasa.Valor);
+            Console.WriteLine(tasa.Dia);
+            StateHasChanged();
+            Snackbar.Add("Tasa actualizada correctamente", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al actualizar la tasa: {ex.Message}", Severity.Error);
+        }
+    }
+}

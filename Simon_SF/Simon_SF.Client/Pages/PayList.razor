@@ -1,0 +1,177 @@
+﻿@* Página Principal de Pagos *@
+@page "/pay-list"
+@using Blazor.SIMONStore.Client.Models
+@using Microsoft.AspNetCore.Authorization
+@inject IPaymentService PaymentOrderSercive
+@inject NavigationManager NavigationManager
+@inject IClientService ClientService
+@inject SweetAlertService SweetAlertService
+@attribute [Authorize(Roles = "Administrador,Coordinador")]
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-center text-primary mb-4">Listado de Pagos</h3>
+        </div>
+    </div>
+
+    @if (Orders != null && Orders.Any())
+    {
+        <MudPaper Class="p-3">
+            <MudTable Items="@Orders" Hover="true" Breakpoint="Breakpoint.Sm">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Pagos Registrados</MudText>
+                </ToolBarContent>
+
+                @* Cabeceras de la tabla *@
+                <HeaderContent>
+                    <MudTh class="text-center">Nro.#</MudTh>
+                    <MudTh>Cliente</MudTh>
+                    <MudTh class="text-right">Total</MudTh>
+                    <MudTh class="text-right">Tasa</MudTh>
+                    <MudTh>Fecha</MudTh>
+                    <MudTh>Vendedor</MudTh>
+                    <MudTh>Banco</MudTh>
+                    <MudTh>Status</MudTh>
+                    <MudTh>Referencia</MudTh>
+                    <MudTh class="text-center">Acciones</MudTh>
+                </HeaderContent>
+
+                @* Filas de la tabla *@
+                <RowTemplate Context="OrderContext">
+                    <MudTd DataLabel="Nro.#" Class="text-center">@OrderContext.Id</MudTd>
+                    <MudTd DataLabel="Cliente">@OrderContext.Beneficiario</MudTd>
+                    <MudTd DataLabel="Total" Class="text-right">@OrderContext.Monto_Divisa.ToString("N2", new System.Globalization.CultureInfo("es-ES"))</MudTd>
+                    <MudTd DataLabel="Tasa" Class="text-right">@OrderContext.Tasa.ToString("N2", new System.Globalization.CultureInfo("es-ES"))</MudTd>
+                    <MudTd DataLabel="Fecha">@OrderContext.Fecha.ToString("dd/MM/yyyy")</MudTd>
+                    <MudTd DataLabel="Vendedor">@OrderContext.Usuario</MudTd>
+                    <MudTd DataLabel="Banco">@OrderContext.Banco</MudTd>
+                    <MudTd DataLabel="Estado">
+                        @switch (OrderContext.Status)
+                        {
+                                 case 1:
+                                <i class="bi bi-send" style="color:dodgerblue">&nbsp;Enviado</i>
+                                break;
+                            case 2:
+                                <i class="bi bi-gear-fill" style="color:grey">&nbsp;En Proceso</i>
+                                break;
+                            case 3:
+                                <i class="bi bi-check2" style="color:green">&nbsp;Aprobado</i>
+                                break;
+
+ 
+                            default:
+                                <MudChip T="object" Color="Color.Dark" StartIcon="@Icons.Material.Filled.Error">Desconocido</MudChip>
+                                break;
+                        }
+                    </MudTd>
+                    <MudTd DataLabel="Referencia">@OrderContext.Referencia</MudTd>
+                    <MudTd DataLabel="Acciones" Class="text-center">
+                        @if (OrderContext.Status > 2)
+                    {
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                           Color="Color.Primary"
+                                           Size="Size.Medium"
+                                           OnClick="@(() => Edit(OrderContext.Id))"
+                                           ToolTip="Editar"
+                                           Disabled/>
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                           Color="Color.Error"
+                                           Size="Size.Medium"
+                                           OnClick="@(() => Delete(OrderContext.Id))"
+                            ToolTip="Eliminar"
+                            Disabled/>
+                        }
+                        else
+                        {
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                           Color="Color.Primary"
+                                           Size="Size.Medium"
+                                           OnClick="@(() => Edit(OrderContext.Id))"
+                                           ToolTip="Editar" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                           Color="Color.Error"
+                                           Size="Size.Medium"
+                                           OnClick="@(() => Delete(OrderContext.Id))"
+                                           ToolTip="Eliminar" />
+                        }
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudPaper>
+    }
+    else
+    {
+        <div class="text-center mt-5">
+            <MudText Typo="Typo.h6" Color="Color.Secondary">No hay pagos registrados</MudText>
+            <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Large" Color="Color.Secondary" />
+        </div>
+    }
+</div>
+
+@* Botón flotante para agregar un nuevo pago *@
+<div class="fixed-bottom-right">
+    <MudTooltip Text="Agregar Pago" Placement="Placement.Top" Arrow="true">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Add" Size="Size.Large" OnClick="NavigateToOtherPage" />
+    </MudTooltip>
+</div>
+
+<style>
+    .fixed-bottom-right {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .content-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+</style>
+
+@code {
+    public List<payment> Orders;
+    public string Message { get; set; }
+    public IEnumerable<Costumer> clients;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Orders = (List<payment>)await PaymentOrderSercive.GetAll();
+            clients = (List<Costumer>)await ClientService.GetAll();
+        }
+        catch (Exception e)
+        {
+            Message = "Error al cargar los datos: " + e.Message;
+        }
+    }
+
+    protected async Task Edit(int id)
+    {
+        NavigationManager.NavigateTo($"/PayDetails/{id}");
+    }
+
+    protected async Task Delete(int id)
+    {
+        var result = await SweetAlertService.ShowConfirmationDialog("¿Estás seguro que desea eliminar este pago?", "Esta acción no se puede deshacer.");
+        Console.WriteLine(result);
+        if (result) // Si el usuario confirma
+        {
+            await PaymentOrderSercive.DeletePayOrder(id);
+            Orders.RemoveAll(p => p.Id == id);
+        }
+        else
+        {
+            Console.WriteLine("se cancelo");
+        }
+     
+    }
+
+    private void NavigateToOtherPage()
+    {
+        NavigationManager.NavigateTo("/PayDetails");
+    }
+}

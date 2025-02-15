@@ -1,0 +1,102 @@
+﻿@page "/Gestion-vendedores"
+@using Blazor.SIMONStore.Client.Models
+@using Microsoft.AspNetCore.Authorization
+
+@inject ISellerService SellerService
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@attribute [Authorize(Roles = "Administrador,Coordinador")]
+<MudPaper Class="pa-4 mx-auto" Style="max-width: 900px;">
+    <MudText Typo="Typo.h5" Class="mb-3" Align="Align.Center">Gestión de Vendedores</MudText>
+
+    @if (seller != null && seller.Any())
+    {
+        <MudTable Items="@seller" Hover="true" Breakpoint="Breakpoint.Sm" Bordered="true" Elevation="1">
+          @*   <ToolBarContent>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="NavigateToOtherPage" Class="ml-auto">
+                    <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-2" /> Nuevo Vendedor
+                </MudButton>
+            </ToolBarContent> *@
+
+            <!-- Cabeceras de la Tabla -->
+            <HeaderContent>
+                <MudTh>ID#</MudTh>
+                <MudTh>Nombre</MudTh>
+                <MudTh>Email</MudTh>
+                <MudTh>Bloqueo</MudTh>
+                <MudTh Accesor="false">Acciones</MudTh>
+            </HeaderContent>
+
+            <!-- Filas de la Tabla -->
+            <RowTemplate Context="sellerContext">
+                <MudTd DataLabel="ID#">@sellerContext.NumCodigo</MudTd>
+                <MudTd DataLabel="Nombre">@sellerContext.TxtApenomb</MudTd>
+                <MudTd DataLabel="Email">@sellerContext.TxtEmail</MudTd>
+                <MudTd DataLabel="Bloqueo">
+                    @if (sellerContext.Bloqueo == "1")
+                    {
+                        <MudChip T="string" Color="Color.Error" Variant="Variant.Outlined">Bloqueado</MudChip>
+                    }
+                    else
+                    {
+                        <MudChip T="string" Color="Color.Success" Variant="Variant.Outlined">Activo</MudChip>
+                    }
+
+                </MudTd>
+                <MudTd>
+                    <!-- Botón Editar -->
+                    <MudFab OnClick="@(() => Edit(sellerContext))"
+                            Color="Color.Primary"
+                            StartIcon="@Icons.Material.Filled.Edit"
+                            Size="Size.Small"
+                            IconSize="Size.Small">
+                    </MudFab>
+
+                
+                </MudTd>
+            </RowTemplate>
+
+            <!-- Pie de la Tabla -->
+            <FooterContent>
+                <MudTd ColSpan="5" Align="Align.Center">
+                    <MudText Typo="Typo.body2">Total de Vendedores: @seller.Count</MudText>
+                </MudTd>
+            </FooterContent>
+        </MudTable>
+    }
+    else
+    {
+        <MudText Typo="Typo.h6" Color="Color.Secondary" Align="Align.Center">No hay vendedores disponibles.</MudText>
+    }
+</MudPaper>
+
+@code {
+    public string email { get; set; }
+    public List<Seller> seller = new List<Seller>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        seller = (List<Seller>)await SellerService.GetAll();
+    }
+
+    protected async Task Edit(Seller seller1)
+    {
+        var parameters = new DialogParameters<VendedorDialog> { { x => x.Server, seller1 } };
+        var dialog = await DialogService.ShowAsync<VendedorDialog>("Editar Vendedor", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            // Actualiza la lista de vendedores tras la edición
+            seller = (List<Seller>)await SellerService.GetAll();
+
+
+        }
+    }
+
+
+    private void NavigateToOtherPage()
+    {
+        NavigationManager.NavigateTo("/OrderDetails"); // Cambia "/OrderDetails" por la ruta correspondiente
+    }
+}

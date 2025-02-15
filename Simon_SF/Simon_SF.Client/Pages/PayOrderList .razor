@@ -1,0 +1,121 @@
+﻿@* Esta va a  Ser la Pagina Principal *@
+@page "/pay-order-list"  
+@using Microsoft.AspNetCore.Authorization
+@* Injectamos el Servicio [OrderService] para poder hacer uso y mostrar las Lista de todas las Ordenes de la Capa del Servicio *@  
+@inject IPaymentOrderService PaymentOrderSercive
+@* Como debemos navegar hasta la pagina de las ordenes... *@
+@inject NavigationManager NavigationManager
+@inject IClientService ClientService
+@attribute [Authorize(Roles = "Administrador,Coordinador")]
+
+@* Agregaremos Una Tabla de MudBlazor Condicionalmente si hay Elementos.. *@
+@if (Orders != null && Orders.Any())
+{
+    <MudTable Items="@Orders" Hover="true" Breakpoint="Breakpoint.Sm">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Ordernes de Entrega de Productos OPP</MudText>
+        </ToolBarContent>
+        @* Cabeceras de la Grilla. *@
+        <HeaderContent>
+            <MudTh>OPP#</MudTh>
+            <MudTh>Client</MudTh>
+            <MudTh>Total</MudTh>
+            <MudTh>Pay Order Date</MudTh>
+            <MudTh>Id user</MudTh>
+            <MudTh>Methodpayment</MudTh>
+            <MudTh>Referencia</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        @* Aca va como queremos mostrar cada una de las Filas
+    Formato Numerico, Con dos Decimales -> "{0:#,0,.00 $}", Formato Currency ->.ToString("C") 
+    "0.00", en-US
+    https://learn.microsoft.com/es-es/dotnet/standard/base-types/custom-numeric-format-strings "
+    *@
+        <RowTemplate Context="OrderContext">
+            @* <MudTd DataLabel="OPP#">@OrderContext.OrderNumber</MudTd> *@
+            <MudTd DataLabel="OPPw#" Class="text-right">@OrderContext.Id</MudTd>
+            <MudTd DataLabel="Client">@(ClientName(OrderContext.ClientId))</MudTd>
+            @* <MudTd DataLabel="Total">@OrderContext.Total.ToString("00.00, $")</MudTd> *@
+            <MudTd DataLabel="Total" Class="text-right">@OrderContext.Total.ToString("N2", new System.Globalization.CultureInfo("es-ES")) $</MudTd>
+            <MudTd DataLabel="Pay Order Date">@OrderContext.PayDate.ToString("dd/MM/yyyy")</MudTd>
+            <MudTd DataLabel="Id user">@OrderContext.IdSeller</MudTd>
+            <MudTd DataLabel="Methodpayment">@OrderContext.Methodpayment</MudTd>
+            <MudTd DataLabel="Referencia">@OrderContext.Ref</MudTd>
+            <MudTd DataLabel="">
+                <MudFab OnClick="@(() => Edit(OrderContext.Id))"
+                        Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.Edit"
+                        Size="Size.Small"
+                        IconSize="Size.Small">
+
+                </MudFab>
+            </MudTd>
+            <MudTd DataLabel="">
+                <MudFab OnClick="@(() => Delete(OrderContext.Id))"
+                        Color="Color.Secondary"
+                        StartIcon="@Icons.Material.Filled.Delete"
+                        Size="Size.Small"
+                        IconSize="Size.Small">
+
+                </MudFab>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+else
+{
+    <label>Null </label>
+}
+@code {
+    //Aca colocamoe sel manejo de los enumerables para mostrar la lista de las ordenes, en la pagina
+    //public IEnumerable<Order> Orders;
+    public List<PaymentOrders> Orders; //Se cambio para una Lista para poder tener acceso am Metodo RemoveAll en esta pantalla
+    public string Message { get; set; }
+    public IEnumerable<Client> clients;
+    //Esto es para inicializar y hacer un llamado a la API y cargar todas las Ordenes.
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            //Hace el Llamado al Servicio.
+            //Se debe Injectar el Servicio de las Ordenes arriba
+            //Orders = await OrderService.GetAll(); //Para Traer todas las Ordenes... en esta Vista.
+
+            Orders = (List<PaymentOrders>)await PaymentOrderSercive.GetAll(); //Castear en -> List<Order> ->Para Traer todas las Ordenes... en esta Vista.
+            clients = (List<Client>)await ClientService.GetAll();
+        }
+        catch (Exception e)
+        {
+
+            Message = "Null";
+        }
+    }
+
+    //Metodo para Editar las Ordenes.
+    protected async Task Edit(int id)
+    {
+        NavigationManager.NavigateTo($"/PayorderDetails/{id}");
+    }
+
+    //Metodo para Eliminar una Orden.
+    protected async Task Delete(int id)
+    {
+        await PaymentOrderSercive.DeletePayOrder(id); //Se Borra de la BD
+        Orders.RemoveAll(p => p.Id == id);  //Se Borra de la Pantalla
+    }
+    public string ClientName(int id)
+    {
+     
+        foreach (var item in clients)
+         {
+             if (item.Id==id)
+             {
+                 var cliente = item;
+                 return cliente.FirstName;
+             }
+         }
+         
+        return "No encontrado";
+
+    }
+}

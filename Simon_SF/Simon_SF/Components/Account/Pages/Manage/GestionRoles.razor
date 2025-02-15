@@ -1,0 +1,43 @@
+﻿@page "/Manage/G"
+@using Blazor.SIMONStore.Client.Models
+
+@inject IDialogService DialogService
+@inject IUserService UserService
+<PageTitle>Gestion Roles</PageTitle>
+
+<StatusMessage />
+<h3>Gestion de Roles</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="d-flex align-items-center">
+            <InputSelect class="form-control me-2" @bind-Value="@Usuarios">
+                @foreach (var item in Usuarios)
+                {
+                    //Mostrara todos los Clientes... en el DropDown
+                    <option value="@item.Id">@(item.UserName )</option>
+                }
+            </InputSelect>
+            &nbsp;
+            <MudIconButton Icon="@Icons.Material.Filled.Archive" aria-label="delete" @onclick="AddClient" />
+
+        </div>
+    </div>
+</div>
+
+@code {
+    public List<User> Usuarios = new List<User>();
+    public User user1 { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        Usuarios = (List<User>)await UserService.GetAll();
+    }
+    protected async Task AddClient()
+    {
+        //Se le pasa el Componente de Blazor donde colocamos todo para ingresar el producto... -> "ProductDetails"
+        //Se envia los parametros por el -> [CascadingParameter] del Componente -> ProductDetalis
+    
+     
+    }
+
+}

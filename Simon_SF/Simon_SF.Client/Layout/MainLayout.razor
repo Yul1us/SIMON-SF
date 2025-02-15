@@ -1,0 +1,61 @@
+﻿@inherits LayoutComponentBase
+@using MudBlazor.Services
+@inject NavigationManager navigation
+@* Required *@
+
+<MudThemeProvider />
+<MudPopoverProvider />
+
+<MudDialogProvider  
+    />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+<div class="page">
+           <AuthorizeView>
+    <div class="sidebar">
+
+        <NavMenu />
+
+    </div>
+    </AuthorizeView>
+    <main>
+        <AuthorizeView>
+                <NotAuthorized>
+                <MudAppBar Color="Color.Transparent" Fixed="false">
+                    <a class="navbar-brand  text-dark" href="/"><img src="imagenes/simon_sf_v02.png" class="img-fluid" width="40" />  Simon-sf</a>
+           
+                    <MudSpacer />
+
+                    <MudLink Href="/Account/Login">
+                        <MudIconButton Icon="@Icons.Material.Rounded.Login" Color="Color.Inherit" />
+                    </MudLink>
+
+                    <MudLink Href="/Account/Register">
+                        <MudIconButton Icon="@Icons.Material.Rounded.AppRegistration" Color="Color.Inherit" />
+                    </MudLink>
+
+                    <MudIconButton Icon="@Icons.Material.Rounded.Call" Color="Color.Inherit" />
+                </MudAppBar>
+            </NotAuthorized>
+             </AuthorizeView>
+
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+@code{
+    
+    private void NavigateToHome()
+    {
+        navigation.NavigateTo("/");
+    }
+}

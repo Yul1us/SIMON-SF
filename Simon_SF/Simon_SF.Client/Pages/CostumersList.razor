@@ -1,0 +1,102 @@
+﻿@using System.Net.Http.Json
+@page "/Gestion-Clientes"
+
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject ICostumerService ClientService
+@attribute [Authorize(Roles = "Administrador,Coordinador")]
+<div class="container mt-4">
+    <MudCard>
+        <MudCardContent>
+            <MudText Typo="Typo.h5" Class="mb-4">Gestión de Clientes</MudText>
+            <MudDataGrid T="Costumer" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                         Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
+                <ToolBarContent>
+                    <MudTextField @bind-Value="_searchString" Placeholder="Buscar Clientes..." Adornment="Adornment.Start" Immediate="true"
+                                  AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    <MudSpacer />
+         @*            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Class="ml-2">Nuevo Cliente</MudButton> *@
+                </ToolBarContent>
+
+                <Columns>
+                    <PropertyColumn Property="x => x.Id" Title="Nr" Sortable="false" Filterable="false" />
+                    <PropertyColumn Property="x => x.TxtCedula" Title="Cédula" />
+                    <PropertyColumn Property="x => x.TxtApellidos" Title="Nombre" />
+                    <PropertyColumn Property="x => x.TxtApenomb" Title="Vendedor" />
+                    <TemplateColumn Title="Acciones">
+                        <CellTemplate Context="product">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit"
+                                       OnClick="@(async () => await Edit(product.Item))" Class="ml-2">
+                                Editar
+                            </MudButton>
+                        </CellTemplate>
+                    </TemplateColumn>
+                </Columns>
+
+                <PagerContent>
+                    <MudDataGridPager T="Costumer" />
+                </PagerContent>
+            </MudDataGrid>
+        </MudCardContent>
+    </MudCard>
+</div>
+
+@code {
+    private IEnumerable<Costumer> Elements = new List<Costumer>();
+    private string _searchString;
+    private bool _sortNameByLength;
+    private List<string> _events = new();
+
+    // Custom sort by name length
+    private Func<Product, object> _sortBy => x =>
+    {
+        if (_sortNameByLength)
+            return x.Name.Length;
+        else
+            return x.Name;
+    };
+
+    // Quick filter - filter globally across multiple columns with the same input
+    private Func<Costumer, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        if (x.TxtApellidos.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if ($"{x.Id} {x.Num_Vendedor} {x.Tipo_Cliente}".Contains(_searchString))
+            return true;
+
+        return false;
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = await ClientService.GetAll();
+    }
+
+    // Events
+    void RowClicked(DataGridRowClickEventArgs<Costumer> args)
+    {
+        _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void RowRightClicked(DataGridRowClickEventArgs<Costumer> args)
+    {
+        _events.Insert(0, $"Event = RowRightClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void SelectedItemsChanged(HashSet<Costumer> items)
+    {
+        _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
+    }
+
+    protected async Task Edit(Costumer costumer)
+    {
+        var parameters = new DialogParameters<CostumerDialog> { { x => x.Server, costumer } };
+        var dialog = await DialogService.ShowAsync<CostumerDialog>("VendedorDialog", parameters);
+        var result = await dialog.Result;
+    }
+}

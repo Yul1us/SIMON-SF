@@ -1,0 +1,109 @@
+﻿@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Authorization
+@page "/product-list"
+
+@inject HttpClient httpClient
+@inject IProductService ProductServices
+@* Como debemos navegar hasta la pagina de las ordenes... *@
+@inject NavigationManager NavigationManager
+@inject IClientService ClientService
+@attribute [Authorize(Roles = "Administrador,Coordinador")]
+<div class="container">
+    <MudDataGrid T="Product" MultiSelection="true" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                 Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Productos lista</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <Columns>
+            <PropertyColumn Property="x => x.Id" Title="Nr" Sortable="false" Filterable="false" />
+            <PropertyColumn Property="x => x.Name" />
+            <PropertyColumn Property="x => x.DescripcionProducto" SortBy="@_sortBy" />
+            <PropertyColumn Property="x => x.Price" />
+
+            <TemplateColumn Title="Image">  
+                <CellTemplate Context="product">
+                    @if (product.Item.ImageUrl != "")
+                    {
+                        <img src="@(product.Item.ImageUrl)" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                    }
+                
+                    </CellTemplate>
+                    </TemplateColumn>
+            <TemplateColumn Title="Actions">
+                    <CellTemplate Context="product">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await Edit(product.Item))">Edit</MudButton>
+  
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="Product" />
+        </PagerContent>
+    </MudDataGrid>
+</div>
+
+@code {
+    private IEnumerable<Product> Elements = new List<Product>();
+    private string _searchString;
+    private bool _sortNameByLength;
+    private List<string> _events = new();
+    // custom sort by name length
+    private Func<Product, object> _sortBy => x =>
+    {
+        if (_sortNameByLength)
+            return x.Name.Length;
+        else
+            return x.Name;
+    };
+    // quick filter - filter globally across multiple columns with the same input
+    private Func<Product, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if ($"{x.Price} {x.DescripcionProducto} {x.ProductSIMONId}".Contains(_searchString))
+            return true;
+
+        return false;
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = await ProductServices.GetAll();
+    }
+
+    // events
+    void RowClicked(DataGridRowClickEventArgs<Product> args)
+    {
+        _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void RowRightClicked(DataGridRowClickEventArgs<Product> args)
+    {
+        _events.Insert(0, $"Event = RowRightClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void SelectedItemsChanged(HashSet<Product> items)
+    {
+        _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
+    }
+
+    protected async Task Edit(Product id)
+    {
+
+        NavigationManager.NavigateTo($"/productedit/{id.Id}");
+    }
+
+    // Metodo para Eliminar una Orden.
+    protected async Task Delete()
+    {
+        // await PaymentOrderSercive.DeletePayOrder(id); //Se Borra de la BD
+        // Orders.RemoveAll(p => p.Id == id);  //Se Borra de la Pantalla
+    }
+}

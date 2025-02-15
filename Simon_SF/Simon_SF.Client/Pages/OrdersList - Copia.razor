@@ -1,0 +1,95 @@
+﻿@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Authorization
+@page "/Order-list2"
+
+@inject HttpClient httpClient
+@inject IOrderService ProductServices
+@* Como debemos navegar hasta la pagina de las ordenes... *@
+@inject NavigationManager NavigationManager
+@inject IClientService ClientService
+@attribute [Authorize(Roles = "Administrador,Coordinador")]
+<div class="container">
+    <MudDataGrid T="Order" Items="@Elements" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter"
+                 Hideable="true" RowClick="@RowClicked" RowContextMenuClick="RowRightClicked" SelectedItemsChanged="@SelectedItemsChanged">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Clientes lista</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                          AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <Columns>
+            <PropertyColumn Property="x => x.Id" Title="Nr" Sortable="false" Filterable="false" />
+            <PropertyColumn Property="x => x.NombreCliente" />
+            <PropertyColumn Property="x => x.Total.ToString()" />
+            <PropertyColumn Property="x => x.OrderDate" />
+
+
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="Order" />
+        </PagerContent>
+    </MudDataGrid>
+</div>
+
+@code {
+    private IEnumerable<Order> Elements = new List<Order>();
+    private string _searchString;
+    private bool _sortNameByLength;
+    private List<string> _events = new();
+    // custom sort by name length
+    private Func<Product, object> _sortBy => x =>
+    {
+        if (_sortNameByLength)
+            return x.Name.Length;
+        else
+            return x.Name;
+    };
+    // quick filter - filter globally across multiple columns with the same input
+    private Func<Order, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        if (x.NombreCliente.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if ($"{x.ClientId} {x.Email} {x.OrderDate}".Contains(_searchString))
+            return true;
+
+        return false;
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = await ProductServices.GetAll();
+    }
+
+    // events
+    void RowClicked(DataGridRowClickEventArgs<Order> args)
+    {
+        _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void RowRightClicked(DataGridRowClickEventArgs<Order> args)
+    {
+        _events.Insert(0, $"Event = RowRightClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    }
+
+    void SelectedItemsChanged(HashSet<Order> items)
+    {
+        _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
+    }
+
+    protected async Task Edit(Order id)
+    {
+
+        //  NavigationManager.NavigateTo($"/productedit/{id.Id}");
+    }
+
+    // Metodo para Eliminar una Orden.
+    protected async Task Delete()
+    {
+        // await PaymentOrderSercive.DeletePayOrder(id); //Se Borra de la BD
+        // Orders.RemoveAll(p => p.Id == id);  //Se Borra de la Pantalla
+    }
+}

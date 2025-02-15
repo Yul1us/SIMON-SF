@@ -1,0 +1,65 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\SF Recorte.jpeg",
+      "PackagePath": "staticwebassets\\SF Recorte.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\SIMON_NWE_ERP_01.png",
+      "PackagePath": "staticwebassets\\SIMON_NWE_ERP_01.png"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\SimonRecorte.jpeg",
+      "PackagePath": "staticwebassets\\SimonRecorte.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\Simon_new.jpeg",
+      "PackagePath": "staticwebassets\\Simon_new.jpeg"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\favicon_01.png",
+      "PackagePath": "staticwebassets\\favicon_01.png"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\favicon_02.png",
+      "PackagePath": "staticwebassets\\favicon_02.png"
+    },
+    {
+      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF\\wwwroot\\sweetalert.js",
+      "PackagePath": "staticwebassets\\sweetalert.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Simon_SF.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Simon_SF.props",
+      "PackagePath": "build\\Simon_SF.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Simon_SF.props",
+      "PackagePath": "buildMultiTargeting\\Simon_SF.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Simon_SF.props",
+      "PackagePath": "buildTransitive\\Simon_SF.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

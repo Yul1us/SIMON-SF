@@ -1,0 +1,192 @@
+﻿@page "/order-list"
+@using Microsoft.AspNetCore.Authorization
+@inject IOrderService OrderService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject SweetAlertService SweetAlertService  
+
+@attribute [Authorize(Roles = "Administrador,Coordinador")]
+
+<div class="content-container">
+    <MudPaper Elevation="3" Class="mb-4 p-3" Style="border-radius: 8px; background-color: #f5f5f5;">
+        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Primary">Órdenes de Entrega de Productos (OPP)</MudText>
+    </MudPaper>
+
+    @if (Orders != null && Orders.Any())
+    {
+        <MudTable Items="@Orders" Hover="true" Breakpoint="Breakpoint.Sm" Class="mb-4">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Listado de Órdenes</MudText>
+            </ToolBarContent>
+            
+            <HeaderContent>
+                <MudTh>ID#</MudTh>
+                <MudTh>OPP#</MudTh>
+                <MudTh>Cliente</MudTh>
+                <MudTh>Total</MudTh>
+                <MudTh>Fecha Pedido</MudTh>
+                <MudTh>Fecha Entrega</MudTh>
+                <MudTh>Estado</MudTh>
+                <MudTh Accented></MudTh>
+                <MudTh Accented></MudTh>
+            </HeaderContent>
+            
+            <RowTemplate Context="OrderContext">
+                <MudTd DataLabel="ID#" Class="text-right">@OrderContext.Id</MudTd>
+                <MudTd DataLabel="OPP#" Class="text-right">@OrderContext.OrderNumberSIMONId</MudTd>
+                <MudTd DataLabel="Cliente">@OrderContext.NombreCliente</MudTd>
+                <MudTd DataLabel="Total" Class="text-right">
+                    @OrderContext.Total.ToString("N2", new System.Globalization.CultureInfo("es-ES")) $
+                </MudTd>
+                <MudTd DataLabel="Fecha Pedido">@OrderContext.OrderDate.ToString("dd/MM/yyyy")</MudTd>
+                <MudTd DataLabel="Fecha Entrega">
+                    @if (OrderContext.Status > 2)
+                    {
+                        @OrderContext.DeliveryDate.ToString("dd/MM/yyyy")
+                    }
+                    else
+                    {
+                        
+                    }
+                </MudTd>
+                <MudTd DataLabel="Estado">
+                    @switch (OrderContext.Status)
+                    {
+                        case 0:
+                            <i class="bi bi-send" style="color:dodgerblue">&nbsp;Enviado</i>
+                            break;
+                        case 1:
+                            <i class="bi bi-gear-fill" style="color:grey">&nbsp;En Proceso</i>
+                            break;
+                        case 2:
+                            <i class="bi bi-check2" style="color:green">&nbsp;Aprobado</i>
+                            break;
+                        case 3:
+                            <i class="bi bi-truck" style="color:orange">&nbsp;Despachado</i>
+                            break;
+                        case 4:
+                            <i class="bi bi-cash" style="color:forestgreen">&nbsp;Facturado</i>
+                            break;
+                        default:
+                            <MudChip T="object" Color="Color.Dark" StartIcon="@Icons.Material.Filled.Error">Desconocido</MudChip>
+                            break;
+                    }
+                </MudTd>
+
+                <MudTd>
+                    @if (OrderContext.Status > 2)
+                    {
+                        <MudFab OnClick="@(() => Edit(OrderContext.Id))"
+                                Color="Color.Primary"
+                                StartIcon="@Icons.Material.Filled.RemoveRedEye"
+                                Size="Size.Small"
+                                IconSize="Size.Small">
+                        </MudFab>
+                    }
+                    else
+                    {
+                        <MudFab OnClick="@(() => Edit(OrderContext.Id))"
+                                Color="Color.Primary"
+                                StartIcon="@Icons.Material.Filled.Edit"
+                                Size="Size.Small"
+                                IconSize="Size.Small">
+                        </MudFab>
+                    }
+
+                    @if (OrderContext.Status > 2)
+                    {
+                        <MudFab OnClick="@(() => Delete(OrderContext.Id))"
+                                Color="Color.Error"
+                                StartIcon="@Icons.Material.Filled.Delete"
+                                Size="Size.Small"
+                                IconSize="Size.Small"
+                                Disabled />
+                    }
+                    else
+                    {
+                        <MudFab OnClick="@(() => Delete(OrderContext.Id))"
+                                Color="Color.Error"
+                                StartIcon="@Icons.Material.Filled.Delete"
+                                Size="Size.Small"
+                                IconSize="Size.Small" />
+                    }
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    }
+    else
+    {
+        <MudPaper Elevation="2" Class="p-4">
+            <MudText Typo="Typo.body1" Color="Color.Secondary">No hay órdenes disponibles en este momento.</MudText>
+            <MudSkeleton Width="100%" Height="40px" Animation="Animation.Wave" />
+            <MudSkeleton Width="100%" Height="40px" Animation="Animation.Wave" />
+            <MudSkeleton Width="100%" Height="40px" Animation="Animation.Wave" />
+        </MudPaper>
+    }
+</div>
+
+<div class="fixed-bottom-right">
+    <MudTooltip Text="Agregar Nueva Orden" Placement="Placement.Top" Arrow="true">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Class="large-fab" OnClick="NavigateToOtherPage" />
+    </MudTooltip>
+</div>
+
+<style>
+    .fixed-bottom-right {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .large-fab {
+        width: 64px;
+        height: 64px;
+    }
+
+    .large-fab .mud-icon {
+        font-size: 28px;
+    }
+</style>
+
+@code {
+    public List<Order> Orders { get; set; }
+    public string Message { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Orders = (List<Order>)await OrderService.GetAll();
+        }
+        catch (Exception)
+        {
+            Message = "Error al cargar las órdenes.";
+        }
+    }
+
+    protected async Task Edit(int id)
+    {
+        NavigationManager.NavigateTo($"/orderdetails/{id}");
+    }
+    private async Task Delete(int id)
+    {
+        var result = await SweetAlertService.ShowConfirmationDialog("¿Estás seguro que desea eliminar esta orden?", "Esta acción no se puede deshacer.");
+        Console.WriteLine(result);
+        if (result) // Si el usuario confirma
+        {
+            await OrderService.DeleteOrder(id);
+            Orders.RemoveAll(p => p.Id == id);
+        }
+        else
+        {
+            Console.WriteLine("se cancelo");
+        }
+    }
+  
+
+    private void NavigateToOtherPage()
+    {
+        NavigationManager.NavigateTo("/OrderDetails");
+    }
+}

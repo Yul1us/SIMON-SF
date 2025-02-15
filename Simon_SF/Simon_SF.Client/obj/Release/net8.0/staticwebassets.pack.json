@@ -1,0 +1,85 @@
+{
+  "Files": [
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\bin\\Release\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\obj\\Release\\net8.0\\compressed\\i632r793ki.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\obj\\Release\\net8.0\\scopedcss\\projectbundle\\Simon_SF.Client.bundle.scp.css",
+      "PackagePath": "staticwebassets\\Simon_SF.Client.bundle.scp.css"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0001.jpg",
+      "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0001.jpg"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0002.jpg",
+      "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0002.jpg"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0003.jpg",
+      "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0003.jpg"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0004.jpg",
+      "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0004.jpg"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0005.jpg",
+      "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0005.jpg"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0006.jpg",
+      "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0006.jpg"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\SIMON_SF_V01.png",
+      "PackagePath": "staticwebassets\\Imagenes\\SIMON_SF_V01.png"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\SIMON_SF_V02.png",
+      "PackagePath": "staticwebassets\\Imagenes\\SIMON_SF_V02.png"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\foto.jpeg",
+      "PackagePath": "staticwebassets\\Imagenes\\foto.jpeg"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\simon.png",
+      "PackagePath": "staticwebassets\\Imagenes\\simon.png"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\simon2.png",
+      "PackagePath": "staticwebassets\\Imagenes\\simon2.png"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\appsettings.Development.json",
+      "PackagePath": "staticwebassets\\appsettings.Development.json"
+    },
+    {
+      "Id": "F:\\OneDrive\\09_PROYECTOS\\SMO_DEV_01\\Simon_SF 9DIC2024_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\appsettings.json",
+      "PackagePath": "staticwebassets\\appsettings.json"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.Simon_SF.Client.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.build.Simon_SF.Client.props",
+      "PackagePath": "build\\Simon_SF.Client.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Simon_SF.Client.props",
+      "PackagePath": "buildMultiTargeting\\Simon_SF.Client.props"
+    },
+    {
+      "Id": "obj\\Release\\net8.0\\staticwebassets\\msbuild.buildTransitive.Simon_SF.Client.props",
+      "PackagePath": "buildTransitive\\Simon_SF.Client.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

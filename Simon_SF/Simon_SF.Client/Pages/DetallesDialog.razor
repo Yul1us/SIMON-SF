@@ -1,0 +1,65 @@
+﻿@using MudBlazor
+
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Class="mr-3 mb-n1" />
+           Detalles del Producto
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <div class="image-container">
+            <MudImage class="product-image" Src="@Server.ImageUrl" Alt="Imagen del producto" />
+        </div>
+
+        <MudTextField Value="@Server.Id.ToString()" Label="Producto ID" ReadOnly="true" />
+        <MudTextField Value="@Server.Name" Label="Nombre del producto" ReadOnly="true" />
+
+        <MudTextField Value="@Server.DescripcionProducto" Label="Descripcion" ReadOnly="true" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+
+    </DialogActions>
+</MudDialog>
+
+
+<style>
+    .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0; /* Añade espacio vertical */
+        padding: 10px; /* Añade espacio alrededor de la imagen */
+        background-color: #f5f5f5; /* Color de fondo para destacar la imagen */
+        border-radius: 10px; /* Bordes redondeados */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    }
+
+    .product-image {
+        max-width: 100%; /* Asegura que la imagen no se desborde del contenedor */
+        max-height: 300px; /* Ajusta la altura máxima según sea necesario */
+        height: auto; /* Mantiene la proporción de la imagen */
+        border-radius: 10px; /* Bordes redondeados para la imagen */
+    }
+</style>
+
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Product Server { get; set; } = new Product();
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private void DeleteServer()
+    {
+        //In a real world scenario this bool would probably be a service to delete the item from api/database
+        Snackbar.Add("Server Deleted", Severity.Success);
+        MudDialog.Close(DialogResult.Ok(Server.Id));
+    }
+}

@@ -1,0 +1,89 @@
+﻿@* Injectar los componntes *@
+@inject IUserService UserService
+@using System.Linq;
+@using Blazor.SIMONStore.Client.Models
+@* Este servicio de MudBlazor, muestra un mensaje que indica si la operacion realizada fue exitosa o fallo... 
+    Es una notificacion que le aparece al usuario, para que este enterado...
+*@
+@inject ISnackbar Snackbar
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+<MudDialog MaxWidth="MaxWidth.Medium" FullWidth="true">
+    <TitleContent>
+        <MudText Typo="Typo.h5">Role Details</MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <!-- Formulario y buscador -->
+        <MudCard Class="mud-card">
+            <MudCardContent>
+                <MudGrid Spacing="3">
+                    <!-- Campo de búsqueda -->
+                    <MudItem xs="12">
+                        <MudTextField T="string" Label="Search Roles" Variant="Variant.Outlined" Dense="true" @bind-Value="Search" />
+                    </MudItem>
+
+                    <!-- Listado de roles -->
+                    <!-- Listado de roles -->
+                    <MudItem xs="12">
+                        <MudList T="Roles" Dense="true" Style="max-height: 300px; overflow-y: auto;">
+                            @foreach (var _user in FilteredClients)
+                            {
+                                <MudListItem T="Roles" Class="mud-ripple"
+                                             Style="@(rol.Name == _user.Name ? "background-color: lightblue;" : "")"
+                                             OnClick="() => SelectClient(_user)">
+                                    <MudText>@_user.Name</MudText>
+                                </MudListItem>
+                            }
+                        </MudList>
+                    </MudItem>
+
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+
+    <DialogActions>
+        <!-- Botones de acción -->
+        <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddCliente">Add</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    public Roles rol = new Roles();
+    public string Search { get; set; }
+    public IEnumerable<Roles> Users = new List<Roles>();
+    IEnumerable<Roles> FilteredClients => string.IsNullOrEmpty(Search) ? Users : Users.Where(c => c.Name.Contains(Search, StringComparison.OrdinalIgnoreCase));
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Users = await UserService.GetAllRoles();
+        }
+        catch (Exception e)
+        {
+            Snackbar.Add($"Error: {e.Message}", Severity.Error);
+        }
+    }
+
+    private void AddCliente()
+    {
+        Snackbar.Add("Role added successfully!", Severity.Success);
+        MudDialog.Close(DialogResult.Ok(rol));
+    }
+
+    private void Cancel()
+    {
+        Snackbar.Add("Action canceled.", Severity.Warning);
+        MudDialog.Cancel();
+    }
+
+    private void SelectClient(Roles client)
+    {
+        rol = client;
+    }
+}

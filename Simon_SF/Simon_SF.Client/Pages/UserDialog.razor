@@ -1,0 +1,88 @@
+﻿@* Injectar los componntes *@
+@inject IUserService UserService
+@using System.Linq;
+@using Blazor.SIMONStore.Client.Models
+@* Este servicio de MudBlazor, muestra un mensaje que indica si la operacion realizada fue exitosa o fallo... 
+    Es una notificacion que le aparece al usuario, para que este enterado...
+*@
+@inject ISnackbar Snackbar
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@* Usando MudBlazor *@
+<MudDialog MaxWidth="MaxWidth.Small" FullWidth="true">
+    <TitleContent>
+        <MudText Typo="Typo.h5" Color="Color.Primary">User Details</MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <EditForm Model="@user">
+            <MudPaper Class="pa-4">
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudTextField @bind-Value="Search" Label="Buscar Usuario" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mb-3" />
+                    </MudItem>
+
+                    <MudItem xs="12">
+                        <MudList T="User" Dense="true" Style="max-height: 300px; overflow-y: auto;">
+                            @foreach (var _user in FilteredClients)
+                            {
+                                <MudListItem T="User" Class="mud-ripple" Style="@(user.Email == _user.Email ? "background-color: lightblue;" : "")"
+                                             OnClick="() => SelectClient(_user)">
+                                    <MudText>@_user.Email</MudText>
+                                </MudListItem>
+                            }
+                        </MudList>
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+        </EditForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Variant="Variant.Text" Color="Color.Secondary" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddCliente">Add</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    // Bindear un Objeto..
+    public User user = new User();
+    public string Search { get; set; }
+
+    // Lista de usuarios filtrados
+    IEnumerable<User> FilteredClients => string.IsNullOrEmpty(Search) ? Users : Users.Where(c => c.Email.Contains(Search, StringComparison.OrdinalIgnoreCase));
+
+    // Lista de usuarios
+    public IEnumerable<User> Users = new List<User>();
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Users = await UserService.GetAll();
+        }
+        catch (Exception e)
+        {
+            Snackbar.Add("Error al cargar usuarios: " + e.Message, Severity.Error);
+        }
+    }
+
+    private void AddCliente()
+    {
+        Snackbar.Add("User added successfully!", Severity.Success, a => a.VisibleStateDuration = 2000);
+        MudDialog.Close(DialogResult.Ok(user));
+    }
+
+    private void Cancel()
+    {
+        Snackbar.Add("Action cancelled.", Severity.Warning, a => a.VisibleStateDuration = 2000);
+        MudDialog.Cancel();
+    }
+
+    private void SelectClient(User client)
+    {
+        user = client;
+    }
+}

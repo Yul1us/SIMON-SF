@@ -1,0 +1,149 @@
+﻿@page "/GestionRoles"
+@using Blazor.SIMONStore.Client.Models
+@using Microsoft.AspNetCore.Authorization
+
+@inject IDialogService DialogService
+@inject IUserService UserService
+<PageTitle>Gestion Roles</PageTitle>
+@attribute [Authorize(Roles = "Administrador")]
+
+<h3 class="text-center mb-4">Gestión de Roles</h3>
+
+<div class="row">
+    <!-- Columna izquierda -->
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <strong>Seleccionar Usuario</strong>
+            </div>
+            <div class="card-body">
+                <!-- Selector de usuario -->
+                <div class="d-flex align-items-center mb-3">
+                    <label for="userSelect" class="form-label me-2">Usuario:</label>
+                    <InputSelect id="userSelect" class="form-control me-2" @bind-Value="user1.Id" @onchange="OnUserSelected">
+                        <option disabled value="">Seleccione un usuario</option>
+                        @foreach (var item in Usuarios)
+                        {
+                            <option value="@item.Id">@item.UserName</option>
+                        }
+                    </InputSelect>
+                    <MudIconButton Icon="@Icons.Material.Filled.Add" aria-label="Añadir usuario" @onclick="AddClient" />
+                </div>
+
+                <!-- Información del usuario seleccionado -->
+                @if (user1 != null)
+                {
+                    <div>
+                        <p><strong>Nombre de Usuario:</strong> @user1.UserName</p>
+                        <p><strong>Email:</strong> @user1.Email</p>
+                        <p><strong>Rol:</strong> @Rol</p>
+                    </div>
+                }
+                else
+                {
+                    <p>No se ha seleccionado un usuario.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white text-center">
+                <strong>Acciones</strong>
+            </div>
+            <div class="card-body text-center">
+                <!-- Botón para añadir rol -->
+                <MudButton Disabled="@_processing" OnClick="ProcessSomething" Variant="Variant.Filled" Color="Color.Success" class="w-100">
+                    @if (_processing)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        <MudText Class="ms-2">Procesando...</MudText>
+                    }
+                    else
+                    {
+                        <MudText>Añadir Rol</MudText>
+                    }
+                </MudButton>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    public List<User> Usuarios = new List<User>();
+    public User user1 { get; set; } = new User();
+    public string Rol { get; set; }
+    public List<UserRole> roles = new List<UserRole>();
+    private string selectedUserId;
+    protected override async Task OnInitializedAsync()
+    {
+        Usuarios = (List<User>)await UserService.GetAll();
+
+    }
+
+    protected async Task AddClient()
+    {
+        var dialog = await DialogService.ShowAsync<UserDialog>("UserDialog");
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            var user = (User)result.Data;
+            user1 = user;
+        }
+        var Rol1 = await UserService.GetUserRole(user1.Id);
+        foreach (var item in Rol1)
+        {
+            Rol = item.Name;
+        }
+    }
+
+    private bool _processing = false;
+
+    async Task ProcessSomething()
+    {
+        _processing = true;
+        var dialog = await DialogService.ShowAsync<RolDialog>("UserDialog");
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            var rol = (Roles)result.Data;
+            UserRole userRole = new UserRole
+                {
+                    UserId = user1.Id,
+                    RoleId = rol.Id
+                };
+            await UserService.SaveRole(userRole);
+        }
+        var Rol1 = await UserService.GetUserRole(user1.Id);
+        foreach (var item in Rol1)
+        {
+            Rol = item.Name;
+        }
+        await Task.Delay(2000);
+        _processing = false;
+    }
+
+    private async Task OnUserSelected(ChangeEventArgs e) 
+    {
+
+        selectedUserId = e.Value.ToString();
+
+        user1 = Usuarios.FirstOrDefault(u => u.Id == selectedUserId);
+        if (user1 != null) 
+        { 
+            var Rol1 = await UserService.GetUserRole(user1.Id);
+            foreach (var item in Rol1)
+            {
+                Rol = item.Name;
+            }
+        } 
+            else 
+            {
+                Rol = "No role assigned"; 
+            }
+        Console.WriteLine($"User selected: {user1.UserName}, Role: {Rol}");
+    }
+}

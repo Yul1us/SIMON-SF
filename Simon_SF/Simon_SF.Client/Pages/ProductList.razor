@@ -1,0 +1,104 @@
+﻿@* Esta va a  Ser la Pagina Principal *@
+@page "/product-list2"  
+@using Microsoft.AspNetCore.Authorization
+@* Injectamos el Servicio [OrderService] para poder hacer uso y mostrar las Lista de todas las Ordenes de la Capa del Servicio *@  
+@inject IProductService ProductServices
+@* Como debemos navegar hasta la pagina de las ordenes... *@
+@inject NavigationManager NavigationManager
+@inject IClientService ClientService
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@attribute [Authorize(Roles = "Administrador,Coordinador")]
+<p>@Message</p>
+@* Agregaremos Una Tabla de MudBlazor Condicionalmente si hay Elementos.. *@
+@if (Products != null && Products.Any())
+{
+    <MudTable Items="@Products" Hover="true" Breakpoint="Breakpoint.Sm">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Ordernes de Entrega de Productos OPP</MudText>
+        </ToolBarContent>
+        @* Cabeceras de la Grilla. *@
+        <HeaderContent>
+            <MudTh>Codigo</MudTh>
+            <MudTh>Nombre</MudTh>
+            <MudTh>Precio</MudTh>
+
+            <MudTh>Descripcion</MudTh>
+            <MudTh>Codigo Simon</MudTh>
+            <MudTh>Imagen</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        @* Aca va como queremos mostrar cada una de las Filas
+    Formato Numerico, Con dos Decimales -> "{0:#,0,.00 $}", Formato Currency ->.ToString("C") 
+    "0.00", en-US
+    https://learn.microsoft.com/es-es/dotnet/standard/base-types/custom-numeric-format-strings "
+    *@
+        <RowTemplate Context="ProductContex">
+            @* <MudTd DataLabel="OPP#">@OrderContext.OrderNumber</MudTd> *@
+            <MudTd DataLabel="Codigo" Class="text-right">@ProductContex.Id</MudTd>
+            <MudTd DataLabel="Client">@ProductContex.Name</MudTd>
+            @* <MudTd DataLabel="Total">@OrderContext.Total.ToString("00.00, $")</MudTd> *@
+            <MudTd DataLabel="Precio" Class="text-right">@ProductContex.Price $</MudTd>
+
+            <MudTd DataLabel="Descripcion">@ProductContex.DescripcionProducto</MudTd>
+            <MudTd DataLabel="Codigo Simon">@ProductContex.ProductSIMONId</MudTd>
+            <MudTd DataLabel="Imagen">@ProductContex.ImageUrl</MudTd>
+            <MudTd DataLabel="">
+                <MudFab OnClick="@(() => Edit(ProductContex.Id))"
+                        Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.Edit"
+                Size="Size.Small"
+                IconSize="Size.Small">
+
+                </MudFab>
+            </MudTd>
+            <MudTd DataLabel="">
+                <MudFab OnClick="@(() => Delete(ProductContex.Id))"
+                        Color="Color.Secondary"
+                        StartIcon="@Icons.Material.Filled.Delete"
+                        Size="Size.Small"
+                        IconSize="Size.Small">
+
+                </MudFab>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+@code {
+   
+    public List<Product> Products; 
+    public string Message { get; set; }
+
+    //Esto es para inicializar y hacer un llamado a la API y cargar todas las Ordenes.
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            //Hace el Llamado al Servicio.
+            //Se debe Injectar el Servicio de las Ordenes arriba
+            //Orders = await OrderService.GetAll(); //Para Traer todas las Ordenes... en esta Vista.
+
+            Products = (List<Product>)await ProductServices.GetAll(); //Castear en -> List<Order> ->Para Traer todas las Ordenes... en esta Vista.
+       
+        }
+        catch (Exception e)
+        {
+
+            Message = "Error... " + e.Message;
+        }
+    }
+
+    //Metodo para Editar las Ordenes.
+    protected async Task Edit(int id)
+    {
+        NavigationManager.NavigateTo($"/productedit/{id}");
+    }
+
+    //Metodo para Eliminar una Orden.
+    protected async Task Delete(int id)
+    {
+      //  await PaymentOrderSercive.DeletePayOrder(id); //Se Borra de la BD
+        //Orders.RemoveAll(p => p.Id == id);  //Se Borra de la Pantalla
+    }
+  
+}

@@ -1,0 +1,159 @@
+﻿@page "/"
+
+@inject IProductService ProductServices
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+
+
+
+<style>
+    .card {
+        margin-bottom: 20px; /* Espacio entre las tarjetas */
+    }
+
+        .card img {
+            height: 200px; /* Altura fija para las imágenes */
+            object-fit: cover; /* Mantener proporción de la imagen */
+        }
+</style>
+
+<p>@Message</p>
+
+@if (products == null || !products.Any())
+{
+    <p>Cargando productos...</p>
+    <MudSkeleton Width="100%" Height="200px" />
+    <MudSkeleton Width="100%" Height="30px" />
+    <MudSkeleton Width="100%" Animation="Animation.Wave" />
+}
+else
+{
+    @RenderCarousel()
+    <br />
+    <MudDivider />
+    <MudGrid>
+        <!-- Productos -->
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.ShoppingCart">
+                    Productos
+                </MudButton>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Categorías -->
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Category">
+                    Categorías
+                </MudButton>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Servicios -->
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.LocalOffer">
+                    Servicios
+                </MudButton>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Ubicación -->
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Place">
+                    Ubicación
+                </MudButton>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <MudDivider />
+    <br />
+
+    @RenderProductCards()
+}
+
+@code {
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+    public string Message { get; set; } 
+    private List<Product> products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            products = (List<Product>)await ProductServices.GetAll();
+        }
+        catch (Exception e)
+        {
+            Message = $"Error al cargar los productos: {e.Message}";
+        }
+    }
+
+    private RenderFragment RenderCarousel() => @<MudCarousel Class="mud-width-full"
+                                                                 Style="height:500px;"
+                                                                 ShowArrows="@arrows"
+                                                                 ShowBullets="@bullets"
+                                                                 EnableSwipeGesture="@enableSwipeGesture"
+                                                                 AutoCycle="@autocycle"
+                                                                 TData="object">
+        @foreach (var item in GetCarouselImages())
+    {
+        <MudCarouselItem Transition="transition" Color="@Color.Transparent">
+            <div class="d-flex justify-content-center align-items-center" style="height:100%">
+                <MudImage ObjectFit="ObjectFit.Fill"
+                          Class="mx-auto h-100 w-auto rounded-lg"
+                          Src="@item"
+                          Alt="Imagen del banner" />
+            </div>
+        </MudCarouselItem>
+    }
+    </MudCarousel>;
+
+    private RenderFragment RenderProductCards() => @<div class="row">
+        @foreach (var product in products)
+    {
+    if (!string.IsNullOrEmpty(product.ImageUrl))
+    {
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card">
+                <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" />
+                <div class="card-body">
+                    <h5 class="card-title">@product.Name</h5>
+                    <p class="card-text">@product.DescripcionCorta</p>
+                    <p class="card-text">$@product.Price</p>
+                    <MudButton Variant="Variant.Text"
+                               Color="Color.Primary"
+                               OnClick="@(() => ViewDetails(product))">
+                        Ver Detalles
+                    </MudButton>
+                </div>
+            </div>
+        </div>
+    }
+    }
+    </div>;
+
+    private List<string> GetCarouselImages() => new List<string>
+    {
+        "/imagenesbanner(1)/catalogo lfl (2)_241203_175351 (1)_page-0001.jpg",
+        "/imagenesbanner(1)/catalogo lfl (2)_241203_175351 (1)_page-0002.jpg",
+        "/imagenesbanner(1)/catalogo lfl (2)_241203_175351 (1)_page-0003.jpg",
+        "/imagenesbanner(1)/catalogo lfl (2)_241203_175351 (1)_page-0004.jpg",
+        "/imagenesbanner(1)/catalogo lfl (2)_241203_175351 (1)_page-0005.jpg",
+        "/imagenesbanner(1)/catalogo lfl (2)_241203_175351 (1)_page-0006.jpg"
+    };
+
+    private async Task ViewDetails(Product product)
+    {
+        var parameters = new DialogParameters<DetallesDialog> { { x => x.Server, product } };
+        var dialog = await DialogService.ShowAsync<DetallesDialog>("Detalles del Producto", parameters);
+        await dialog.Result;
+    }
+}

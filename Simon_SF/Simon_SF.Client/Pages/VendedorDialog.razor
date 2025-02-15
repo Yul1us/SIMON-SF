@@ -1,0 +1,51 @@
+﻿@using Blazor.SIMONStore.Client.Models
+@using MudBlazor
+@inject ISellerService SellerService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-3 mb-n1" />
+           Detalles del Vendedor
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+
+        <MudTextField Value="@Server.NumCodigo.ToString()" Label="ID" ReadOnly="true" />
+        <MudTextField Value="@Server.TxtApenomb" Label="Nombre " ReadOnly="true" />
+        <MudTextField @bind-Value="Server.TxtEmail" Label="Email" />
+        <MudTextField Value="@Server.Bloqueo" Label="Bloqueo" ReadOnly="true" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Guardar">Guardar</MudButton>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+
+    </DialogActions>
+</MudDialog>
+
+
+
+
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Seller Server { get; set; } = new Seller();
+
+    private void Cancel()
+    {
+   
+        MudDialog.Cancel();
+    } 
+
+    private async void Guardar()
+    {
+        //In a real world scenario this bool would probably be a service to delete the item from api/database
+        await SellerService.SaveSeller(Server);
+        Snackbar.Add("Vendedor Modificado", Severity.Success);
+        MudDialog.Close(DialogResult.Ok(Server.NumCodigo));
+    }
+}

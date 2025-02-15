@@ -1,0 +1,142 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using System.Globalization
+
+@inject IProductService ProductService
+@inject ICostumerService CostumerService
+@inject ISnackbar Snackbar
+
+<MudDialog MaxWidth="MaxWidth.Medium" FullWidth="true">
+    <TitleContent>
+        <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-4 font-weight-bold text-primary">Detalles del Producto</MudText>
+    </TitleContent>
+    <DialogContent>
+        <EditForm Model="@Product">
+            <MudPaper Class="p-4 mb-4 shadow-lg rounded-3 bg-light" Elevation="4">
+                <!-- Subtotal -->
+                <MudText Typo="Typo.subtitle1" Align="Align.Right" Class="mt-2 text-dark">
+                    Subtotal: <b>@(subtotal?.ToString("N2", new System.Globalization.CultureInfo("es-ES")) ?? "0.00") $</b>
+                </MudText>
+
+                <!-- Dropdown con lupa para búsqueda -->
+                <MudGrid >
+                    <MudItem xs="2" class="d-flex align-center">
+                        <MudButton StartIcon="@Icons.Material.Filled.Search" OnClick="ToggleSearch" Variant="Variant.Outlined" Color="Color.Primary" />
+                    </MudItem>
+                    <MudItem xs="10">
+                        <MudPopover Open="showSearch" Class="p-3">
+                            <MudTextField Label="Buscar producto"
+                                          @bind-Value="searchTerm"
+                                          Immediate="true"
+                                          Variant="Variant.Outlined"
+                                          Dense="true"
+                                          OnInput="OnSearchInput" />
+                        </MudPopover>
+                    </MudItem>
+                </MudGrid>
+
+                <MudSelect Label="Producto"
+                           Value="@selectedProductId"
+                           ValueChanged="@((int productId) => ProductHasChanged(productId))"
+                           Variant="Variant.Filled" Dense="true" Class="mt-2">
+                    <MudSelectItem Value="0">Seleccionar un producto</MudSelectItem>
+                    @foreach (var item in filteredProducts)
+                    {
+                        <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudPaper>
+
+            <!-- Detalles del producto -->
+            <MudPaper Class="p-4 mb-4 shadow-lg rounded-3 bg-light" Elevation="4">
+                <MudGrid GutterSize="3">
+                    <MudItem xs="12" sm="6">
+                        <MudTextField Label="Precio" Value="@Product.Price.ToString("N2", new System.Globalization.CultureInfo("es-ES"))" Disabled="true" Variant="Variant.Filled" Dense="true" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudNumericField Label="Cantidad" @bind-Value="@Product.Quantity" Variant="Variant.Filled" Dense="true" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudTextField Label="Unidad" Value="@Product.TxtUnidadMedida" Disabled="true" Variant="Variant.Filled" Dense="true" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <MudTextField Label="Multiplicador" Value="@Multiplicador?.ToString("N2", new System.Globalization.CultureInfo("es-ES"))" Disabled="true" Variant="Variant.Filled" Dense="true" />
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+        </EditForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="Cancel" Class="me-2">Cancelar</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddProduct">Añadir</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    public Product Product = new Product();
+    public string searchTerm { get; set; } = string.Empty;
+    public IEnumerable<Product> products = new List<Product>();
+    public IEnumerable<Product> filteredProducts => string.IsNullOrEmpty(searchTerm) ? products : products.Where(c => c.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+    public Costumer Cliente = new Costumer();
+    private int selectedProductId = 0;
+    private bool showSearch = false;
+    [Parameter]
+    public int? Server { get; set; }
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Cliente = await CostumerService.GetDetails(Server);
+            products = await ProductService.GetAll();
+        }
+        catch (Exception e)
+        {
+            Snackbar.Add("Error al cargar productos: " + e.Message, Severity.Error);
+        }
+    }
+
+    private void OnSearchInput(ChangeEventArgs e)
+    {
+        searchTerm = e.Value.ToString();
+    }
+
+    private void ToggleSearch()
+    {
+        showSearch = !showSearch;
+    }
+
+    public float? Multiplicador => Product.FacturaPor == 0 ? Product.Quantity : Product.promedio_peso * Product.Quantity;
+
+    public decimal? subtotal => Product.Price * (decimal?)Multiplicador;
+
+    protected async Task ProductHasChanged(int productId)
+    {
+        Product.Id = productId;
+        if (Product.Id > 0)
+        {
+            selectedProductId = productId;
+            await LoadProductDetails(Product.Id);
+        }
+    }
+
+    private async Task LoadProductDetails(int productId)
+    {
+        Product = await ProductService.GetDetails(productId, Cliente.Tipo_Precio, Cliente.Num_Tipo_Cliente);
+    }
+
+    private void Cancel()
+    {
+        Snackbar.Add("Operación cancelada.", Severity.Warning);
+        MudDialog.Cancel();
+    }
+
+    private void AddProduct()
+    {
+        Snackbar.Add("Producto añadido exitosamente.", Severity.Success);
+        MudDialog.Close(DialogResult.Ok(Product));
+    }
+}

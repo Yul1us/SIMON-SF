@@ -1,0 +1,181 @@
+﻿@inherits LayoutComponentBase
+@implements IDisposable
+
+@inject NavigationManager NavigationManager
+<style>
+    .appbar-white {
+        background-color: white;
+    }
+</style>
+<MudThemeProvider />
+<MudPopoverProvider />
+
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Color="Color.Default" Elevation="4" Class="appbar-white">
+         <AuthorizeView> 
+        <Authorized>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Dark" OnClick="ToggleDrawer" />
+            </Authorized>
+        </AuthorizeView>
+        <a class="navbar-brand  text-dark" href="/"><img src="imagenes/Simon_new.jpeg" class="img-fluid" width="40" />  Simon-sf</a>
+        <MudSpacer />
+        <AuthorizeView>
+  
+            <NotAuthorized>
+                <MudLink Href="/Account/Login">
+                    <MudIconButton Icon="@Icons.Material.Rounded.Login" Color="Color.Inherit" />
+                </MudLink>
+
+                <MudLink Href="/Account/Register">
+                    <MudIconButton Icon="@Icons.Material.Rounded.AppRegistration" Color="Color.Inherit" />
+                </MudLink>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" Color="Color.Default">
+        <MudNavMenu>
+
+              
+               <AuthorizeView Roles="Administrador">
+            <Authorized >
+
+                    <MudPaper Width="240px" Class="d-inline-flex py-3" Elevation="0">
+                        <MudNavMenu Class="mud-width-full">
+                            <MudText Typo="Typo.h6" Class="px-4">Menú</MudText>
+                            <MudDivider Class="my-2" />
+                            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard" Match="NavLinkMatch.All">Inicio</MudNavLink>
+                            <MudNavLink Href="/order-list" Icon="@Icons.Material.Filled.ShoppingCart">Órdenes</MudNavLink>
+                            <MudNavLink Href="/pay-list" Icon="@Icons.Material.Filled.Payments">Pagos</MudNavLink>
+                            <MudNavLink Href="/claims-list" Icon="@Icons.Material.Filled.AssistantPhoto">Devoluciones</MudNavLink>
+                            <MudNavLink Href="/product-list" Icon="@Icons.Material.Filled.Receipt">Producto</MudNavLink>
+                            <MudNavGroup Title="Configuración" Icon="@Icons.Material.Filled.Settings" Expanded="false">
+                                <MudNavLink Href="/Gestionroles" Icon="@Icons.Material.Filled.Security" IconColor="Color.Success">Roles</MudNavLink>
+                                <MudNavLink Href="/Gestion-vendedores" Icon="@Icons.Material.Filled.People" IconColor="Color.Info">Vendedores</MudNavLink>
+                                <MudNavLink Href="/Gestion-Clientes" Icon="@Icons.Material.Filled.Person" IconColor="Color.Warning">Clientes</MudNavLink>
+                            </MudNavGroup>
+                            <MudNavLink Href="/Account/Manage" Icon="@Icons.Material.Filled.People">@context.User.Identity?.Name</MudNavLink>
+                        </MudNavMenu>
+
+                    </MudPaper>
+
+
+            </Authorized>
+            </AuthorizeView>
+
+            <AuthorizeView Roles="Coordinador">
+                <Authorized>
+
+                    <MudPaper Width="240px" Class="d-inline-flex py-3" Elevation="0">
+                        <MudNavMenu Class="mud-width-full">
+                            <MudText Typo="Typo.h6" Class="px-4">Menú</MudText>
+                            <MudDivider Class="my-2" />
+                            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard" Match="NavLinkMatch.All">Inicio</MudNavLink>
+                            <MudNavLink Href="/order-list" Icon="@Icons.Material.Filled.ShoppingCart">Órdenes</MudNavLink>
+                            <MudNavLink Href="/pay-list" Icon="@Icons.Material.Filled.Payments">Pagos</MudNavLink>
+                            <MudNavLink Href="/claims-list" Icon="@Icons.Material.Filled.AssistantPhoto">Devoluciones</MudNavLink>
+                            <MudNavLink Href="/product-list" Icon="@Icons.Material.Filled.Receipt">Producto</MudNavLink>
+                            <MudNavGroup Title="Configuración" Icon="@Icons.Material.Filled.Settings" Expanded="false">
+                      
+                                <MudNavLink Href="/Gestion-vendedores" Icon="@Icons.Material.Filled.People" IconColor="Color.Info">Vendedores</MudNavLink>
+                                <MudNavLink Href="/Gestion-Clientes" Icon="@Icons.Material.Filled.Person" IconColor="Color.Warning">Clientes</MudNavLink>
+                            </MudNavGroup>
+                            <MudNavLink Href="/Account/Manage" Icon="@Icons.Material.Filled.People">@context.User.Identity?.Name</MudNavLink>
+                        </MudNavMenu>
+
+                    </MudPaper>
+
+
+                </Authorized>
+            </AuthorizeView>
+            <AuthorizeView Roles="Vendedor">
+                <Authorized>
+
+                    <MudPaper Width="240px" Class="d-inline-flex py-3" Elevation="0">
+                        <MudNavMenu Class="mud-width-full">
+                            <MudText Typo="Typo.h6" Class="px-4">Menú</MudText>
+                            <MudDivider Class="my-2" />
+                            <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard" Match="NavLinkMatch.All">Inicio</MudNavLink>
+                            <MudNavLink Href="/order-list/vendedor" Icon="@Icons.Material.Filled.ShoppingBag">Órdenes</MudNavLink>
+                            <MudNavLink Href="pay-list/vendedor" Icon="@Icons.Material.Filled.ShoppingCart">Pagos</MudNavLink>
+                            <MudNavLink Href="/product-list" Icon="@Icons.Material.Filled.Receipt">Producto</MudNavLink>
+                            <MudNavGroup Title="Configuración" Icon="@Icons.Material.Filled.Settings" Expanded="false" disabled>
+                                <MudNavLink Href="/users" Icon="@Icons.Material.Filled.People" IconColor="Color.Success">Usuarios</MudNavLink>
+                                <MudNavLink Href="/security" Icon="@Icons.Material.Filled.Security" IconColor="Color.Info">Seguridad</MudNavLink>
+                            </MudNavGroup>
+                            <MudNavLink Href="/Account/Manage" Icon="@Icons.Material.Filled.People">@context.User.Identity?.Name</MudNavLink>
+                        </MudNavMenu>
+
+                    </MudPaper>
+                </Authorized>
+
+            </AuthorizeView>
+            <AuthorizeView>
+                <Authorized>
+
+                    <div class="nav-item px-3" style="text-align: center; margin-top: auto;"> <MudText Typo="Typo.h6"> <form action="Account/Logout" method="post" style="display: inline;"> <AntiforgeryToken /> <input type="hidden" name="ReturnUrl" value="@currentUrl" /> <button type="submit" style="border: none; background: none; cursor: pointer;"> <i class="bi bi-door-closed"></i> Logout </button> </form> </MudText> </div>
+                </Authorized>
+
+                <NotAuthorized>
+
+                    <MudPaper Width="240px" Class="d-inline-flex py-3" Elevation="0">
+                        <MudNavMenu Class="mud-width-full">
+                            <MudText Typo="Typo.h6" Class="px-4">Menú</MudText>
+                            <MudDivider Class="my-2" />
+                            <MudNavLink Href="/" Match="NavLinkMatch.All"><MudText Typo="Typo.h6">Inicio</MudText></MudNavLink>
+
+                            <MudNavLink Href="/Account/Login"><MudText Typo="Typo.h6">Login</MudText></MudNavLink>
+                            <MudNavLink Href="/Account/Register"><MudText Typo="Typo.h6">Registro</MudText></MudNavLink>
+
+                        </MudNavMenu>
+
+                    </MudPaper>
+
+                </NotAuthorized>
+            </AuthorizeView>
+
+
+        </MudNavMenu>
+    </MudDrawer>
+
+    <MudMainContent>
+        <article class="content">
+            @Body
+        </article>
+    </MudMainContent>
+
+
+</MudLayout>
+
+
+
+
+@code {
+    private bool _drawerOpen = false;
+
+    private void ToggleDrawer()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}

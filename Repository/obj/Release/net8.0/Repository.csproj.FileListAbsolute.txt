@@ -1,0 +1,15 @@
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\bin\Release\net8.0\Repository.deps.json
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\bin\Release\net8.0\Repository.dll
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\bin\Release\net8.0\Repository.pdb
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\bin\Release\net8.0\Shared.dll
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\bin\Release\net8.0\Shared.pdb
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\Repository.csproj.AssemblyReference.cache
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\Repository.GeneratedMSBuildEditorConfig.editorconfig
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\Repository.AssemblyInfoInputs.cache
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\Repository.AssemblyInfo.cs
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\Repository.csproj.CoreCompileInputs.cache
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\Repository.csproj.Up2Date
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\Repository.dll
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\refint\Repository.dll
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\Repository.pdb
+F:\OneDrive\09_PROYECTOS\SMO_DEV_01\Simon_SF 9DIC2024_V2\Repository\obj\Release\net8.0\ref\Repository.dll

@@ -1,0 +1,341 @@
+﻿
+@*Directiva de Pagina *@
+@page "/PayorderDetails" 
+@* Para recibir la Edicion se debe agregar una directiva para recibir el Id. Este id va a ser Capturado abajo con la Directiva [Parameter]
+ Ejemplo hasta la Sección 6 Leccion 116 Minuto 3:18
+ Esto Tambien es un EndPoint Capturando el Parametro id
+*@
+
+
+@page "/PayorderDetails/{id:int}"
+@using Microsoft.AspNetCore.Authorization
+
+@*Injección de la Capa de Servicios -> Se le debe poner un Nombre al Servicio -> ProductCategoryService
+    Ejemplo hasta la Sección 6 Leccion 83 = 83. Probar el dropdown de categorias y corregir errores
+    https://www.udemy.com/course/blazor-ultimate/learn/lecture/27011368#questions
+*@
+
+
+
+
+ @* Injectar el servicio del cliente *@
+
+ @inject ICostumerService ClientService
+ @inject IBankService BankSercice
+ @* Injectar el servicio de Ordenes *@
+ @inject NavigationManager NavigationManager
+
+ @* Injectar el Servicio de MudBlazor *@
+ @inject IDialogService DialogService
+ @inject IJSRuntime IJSRuntime
+@* Injectar Navigate para movernos entre paginas -> SPA *@
+ @inject IPaymentOrderService PayOrderService
+ @inject IOrderService orderservice
+
+ @* Este servicio de MudBlazor, muestra un mensaje que indica si la operacion realizada fue exitosa o fallo...
+    Es una notificacion que le aparece al usuario, para que este enterado...
+*@
+@inject ISnackbar Snackbar
+
+@* Agrega la Seguridad necesaria para que no entren sin autorizacion... -> attribute [Authorize] *@
+@attribute [Authorize]
+
+@* Si hay algún Message lo muestra *@
+<p>@Message</p>
+
+
+@if(clients != null && Order != null)
+{
+    @* Cuando presionen el Boton se llama SaveOrder -> OnValidSubmit="SaveOrder"*@
+    <EditForm Model = "@Order" OnValidSubmit="SaveOrder">
+        @* Formulario de la Orden Seccion 93. Implementar formulario de Ordenes 
+            Solo se usara Boostrap
+        *@
+        @* Cabecera en Boostrap - En este Caso Sera el Maestro de la Orden*@
+        <div class="card">
+            <h5 class="card-header">PayOrderDetails</h5>
+
+            @* Cuerpo en Boostrap*@
+            <div class="card-body">
+                <div class="container">
+                    @* Aca en el Container van los elementos del formulario 
+                        en forma de filas y haciendo 12 columnas para hacerlo responsive
+                    *@
+
+                    @* Fila 1 con 12 columnas *@
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <input type="submit" class="btn btn-success" value="Save"/>
+                            <input type="button" class="btn btn-secondary" value="Cancel" @onclick="Cancel" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                        </div>
+                    </div>
+
+
+                    @* Fila 2 con 12 columnas *@
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="">Number</label>
+                            @* Esta clase es de Blazor InputNumber *@
+                            <InputNumber class="form-control" @bind-Value="@Order.PayNumber" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="">Order Date</label>
+                            @* Esta clase es de Blazor InputDate -> Muestra el Calendario *@
+                            <InputDate class="form-control" @bind-Value="@Order.PayDate" />
+                        </div>
+
+                    </div>
+
+                    @* Fila 3 con 12 columnas *@
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="">Client</label>
+                            <div class="d-flex align-items-center">
+                                <InputSelect class="form-control me-2" @bind-Value="@Order.ClientId">
+                                    @foreach (var item in clients)
+                                    {
+                                        //Mostrara todos los Clientes... en el DropDown
+                                        <option value="@item.Id">@( item.TxtApellidos)</option>
+                                    }
+                                </InputSelect>
+                                &nbsp;
+                                    <MudIconButton Icon="@Icons.Material.Filled.Archive" aria-label="delete" @onclick="AddClient" />
+                             
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                        </div>
+                  
+                        <div class="col-md-4 mb-3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="">Metodo de pago</label>
+                            @* Esta clase es de Blazor InputNumber *@
+                
+                            <InputSelect class="form-control me-2" onchange="@Cambio(Order.Methodpayment)" @bind-Value="@Order.Methodpayment">
+                                @foreach (var item in Banks)
+                                {
+                                    //Mostrara todos los Clientes... en el DropDown
+                                    <option value="@item.CodBanco">@(item.Nombre)</option>
+                                }
+                            </InputSelect>
+                        </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="">Total</label>
+                            @* Esta clase es de Blazor InputNumber *@
+                            <InputNumber class="form-control" @bind-Value="@Order.Total" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                                @if (Order.Methodpayment != 8.ToString() && !string.IsNullOrEmpty(Order.Methodpayment))
+                                {
+                                    <label for="">Referencia</label> <InputText class="form-control" @bind-Value="@Order.Ref" />
+                                }
+                            
+                        </div>
+
+                    </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        @* Detalles en Boostrap - En este Caso Se mostrara solo si existen Productos en la Orden ó si hay algo -> Order.Products.Any() *@
+
+        @if (Orders != null )
+        {
+            @* Si hay algo... se mostrara... https://mudblazor.com/components/table#default-table *@
+
+            <MudTable Items="@Orders" Hover="true" Breakpoint="Breakpoint.Sm" Striped="true" Bordered="true" Dense="true">
+                @* Titulos e la tabla *@
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Orders</MudText>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Date</MudTh>
+                    <MudTh>Price</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                @*  Como se Comportaran las filas de la tabla
+        Se debe generar un contexto -> ProductContext Para bindear el objeto de la tabla
+        Luego se bidea con @ProductContext.Name
+        *@
+                <RowTemplate Context="OrdersContext">
+                    <MudTd DataLabel="Name">@OrdersContext.Id</MudTd>
+                    <MudTd DataLabel="Date">@OrdersContext.OrderDate.ToShortDateString()</MudTd>
+                    <MudTd DataLabel="Price">@OrdersContext.Total.ToString("N2", new System.Globalization.CultureInfo("es-ES")) $</MudTd>
+           
+                </RowTemplate>
+            </MudTable>
+        }
+
+    </EditForm>
+
+
+
+
+
+}
+else
+{
+    <p>Loading...</p>
+}
+
+
+@code {
+    private bool estaProcesando { get; set; } = false;
+
+    //Declaracion de las Variables...
+    // Debemos binder un objeto
+    public PaymentOrders Order;
+    //Colecion de Categorias -> ProductCategory
+    //public IEnumerable<ProductCategory> productCategories;
+    //Colecion de Categorias -> Product
+    //public IEnumerable<Product> products;
+    //Colecion de Clientes -> Client
+    public IEnumerable<Costumer> clients;
+    public IEnumerable<Order> Orders;
+    public IEnumerable<Bank> Banks;
+
+    // MulticastNotSupportedException si ocurre algún error
+    public string Message { get; set; }
+    //Para los Productos
+    //public int productId { get; set; }
+
+    //Capturamos el Parametro para hacer Edicion en la Orden
+    [Parameter] public int id { get; set; }
+    public string cambio { get; set; }
+
+    //Aca se sobreescribirá la inicialización de la pagina.
+    //Para cargar e inicializar Order y la Lista de Productos
+    protected async override Task OnInitializedAsync()
+    {
+        // Load the script dynamically using InvokeAsync
+
+        try
+        {
+
+            //Chequear si el Parametro id es >0 para buscar en BD la Orden.
+            //Viene o depende del Servicio [OrderDetails -> GetDetail]
+
+            if (id>0)
+            {
+                Order = await PayOrderService.GetDetails(id);
+            }
+            else
+            {
+                //En este Contructor se inicializan las Variables
+                //Hay que asignar valores x defecto, para que cuando la pagina cargue por primera vez tenga un valor
+                Order = new PaymentOrders()
+                    {
+                        //Para tener el proximo valor de la Orden...
+                        PayNumber = await PayOrderService.GetNextNumber(),
+
+                        PayDate = DateTime.Today,
+
+
+                    };
+                //productCategories = await ProductCategoryService.GetProductCategories();
+                //Trae los Productos de la Categoria
+                //await LoadProducts(Order.ProductCategoryId);
+
+            }
+
+            Banks = await BankSercice.GetAll();
+
+            //Trae los Clientes de la tabla Clients
+            clients = await ClientService.GetAll();
+        }
+        catch (Exception e)
+        {
+            Message = "There was an error..." + e.Message;
+        }
+    }
+
+    //Para implementar los Dropdown
+    // protected async Task ProductCategoryHasChanged(int productCategoryId)
+    // {
+    //Aca la Idea es cargar los Productos... luego que se dispara el evento Changed ProductCategoryId...
+    // ValueExpression="@(() => Order.ProductCategoryId)" Es el Valor que se pasa.... a esta metodo...
+    //Order.ProductCategoryId = productCategoryId;
+
+    //Validamos que tenga algo...
+    //if (Order.ProductCategoryId > 0)
+    //{
+    //Trae los Productos de la Categoria
+    //await LoadProducts(Order.ProductCategoryId); 
+    //}
+    // }
+
+    //Finalmente el que carga los Productos en un metodo privado...
+    // private async Task LoadProducts(int productCategoryId)
+    // {
+    //Llama al Servicio... para cargar los Productos
+    //     products = await ProductService.GetByCategory(productCategoryId);
+    //     Console.WriteLine("productCategoryId" + productCategoryId);
+    // }
+
+
+    protected async Task SaveOrder()
+    {
+
+        await PayOrderService.SavePayOrder(Order);
+        NavigateToHome();
+    }
+
+    //Para movernos usamos Navigation.
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/pay-order-list");
+    }
+
+    protected void Cancel()
+    {
+        NavigateToHome();
+    }
+    protected String Cambio(string tipo)
+    {
+        cambio = tipo;
+        return cambio;
+    }
+
+
+    protected async Task AddClient()
+    {
+        //Se le pasa el Componente de Blazor donde colocamos todo para ingresar el producto... -> "ProductDetails"
+        //Se envia los parametros por el -> [CascadingParameter] del Componente -> ProductDetalis
+        var dialog = DialogService.Show<ClientDetails>("ClienteDetails");
+        var result = await dialog.Result;
+        // Si el usuario no Cancelo... el Formulario Pop Pup
+        if (!result.Canceled)
+        {
+            var cliente = (Costumer)result.Data;
+
+
+            Order.ClientId = cliente.Id;
+            Order.IdSeller = cliente.Num_Vendedor+"";
+              Orders = await orderservice.GetByClient(cliente.Id);
+        }
+    }
+  
+
+
+}
+

@@ -1,0 +1,371 @@
+﻿@* Directivas de Página *@
+@page "/PayDetails"
+@page "/PayDetails/{id:int}"
+
+@* Usos y dependencias *@
+@using Blazor.SIMONStore.Client.Models
+@using Microsoft.AspNetCore.Authorization
+@using System.Net.Http.Headers
+@using Shared
+
+@* Inyecciones de Servicios *@
+@inject ICostumerService ClientService
+@inject IBankService BankSercice
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject IJSRuntime IJSRuntime
+@inject IPaymentService PayOrderService
+@inject IOrderService orderservice
+@inject ISnackbar Snackbar
+
+@* Atributos de Autorización *@
+@attribute [Authorize]
+
+@* Mostrar mensajes si existen *@
+@if (!string.IsNullOrEmpty(Message))
+{
+    <div class="alert alert-danger" role="alert">
+        @Message
+    </div>
+}
+
+@if (clients != null && Order != null)
+{
+    <EditForm Model="@Order" OnValidSubmit="SaveOrder">
+        <div class="card shadow-sm">
+            @* Cabecera del formulario *@
+            <div class="card-header bg-danger text-white text-center">
+                <h5 class="card-title mb-0">Reportar Pago</h5>
+            </div>
+
+            @* Cuerpo del formulario *@
+            <div class="card-body">
+                <div class="container-fluid">
+                    @* Estado de la orden *@
+                    <div class="row mb-4">
+                        <div class="col-md-12 text-center">
+                            @if (Order.Status == 1)
+                            {
+                                <span class="badge bg-primary fs-5">
+                                    <i class="bi bi-send"></i> Enviado
+                                </span>
+                            }
+                            @if (Order.Status == 2)
+                            {
+                                <span class="badge bg-secondary fs-5">
+                                    <i class="bi bi-gear-fill"></i> En Proceso
+                                </span>
+                            }
+                            @if (Order.Status == 3)
+                            {
+                                <span class="badge bg-success fs-5">
+                                    <i class="bi bi-check2"></i> Aprobado
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    @* Botones para guardar o cancelar *@
+                    <div class="row mb-4">
+                        <div class="col-md-12 text-center">
+                            <AuthorizeView Roles="Administrador,Coordinador">
+                                <Authorized Context="authContext">
+                                    <button type="button" class="btn btn-success btn-lg" @onclick="SaveOrder">
+                                        <i class="bi bi-save"></i> Guardar
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-lg ms-3" @onclick="Cancel">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </button>
+                                </Authorized>
+                            </AuthorizeView>
+
+                            <AuthorizeView Roles="Vendedor">
+                                <Authorized Context="authVendedorContext">
+                                    <button type="button" class="btn btn-success btn-lg" @onclick="SaveOrderVendedor">
+                                        <i class="bi bi-save"></i> Guardar
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-lg ms-3" @onclick="CancelVendedor">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </button>
+                                </Authorized>
+                            </AuthorizeView>
+                        </div>
+                    </div>
+
+                    @* Información de tasa y fecha *@
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Fecha de la Orden</label>
+                                <InputDate class="form-control" @bind-Value="Order.Fecha_Creacion" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Tasa del Día</label>
+                                <input class="form-control" value="@Order.Tasa.ToString("N2")" readonly />
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Selección de cliente *@
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Cliente</label>
+                                <div class="input-group">
+                                    <InputSelect class="form-control" @bind-Value="@Order.Cod_Beneficiario" disabled>
+                                        @foreach (var item in clients)
+                                        {
+                                            <option value="@item.Id">@item.TxtApellidos</option>
+                                        }
+                                    </InputSelect>
+                                    <button class="btn btn-outline-primary" @onclick="AddClient" disabled="@(Order.Status > 2)">
+                                        <i class="bi bi-plus"></i> 
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Selección del método de pago *@
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Método de Pago</label>
+                                <InputSelect class="form-control" @bind-Value="Order.Cod_Banco">
+                                    @foreach (var item in Banks)
+                                    {
+                                        <option value="@item.CodBanco">@item.Nombre</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Total a pagar y referencia *@
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Total</label>
+                                <input class="form-control" @bind-value="Order.Debe" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            @if (Order.Cod_Banco != 8 && Order.Cod_Banco != 0)
+                            {
+                                <div class="form-group">
+                                    <label class="form-label">Referencia</label>
+                                    <InputText class="form-control" @bind-Value="@Order.Referencia" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @* Comentarios *@
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Comentarios</label>
+                                <InputTextArea class="form-control" @bind-Value="@Order.Comentario"></InputTextArea>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Subir imagen de comprobante de pago *@
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Subir Imagen del Pago</label>
+                                <InputFile class="form-control" OnChange="@ManejadorOnSubidaArchivo"></InputFile>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Vista previa de la imagen *@
+                    @if (imagenPost != null)
+                    {
+                        <div class="row mb-4">
+                            <div class="col-md-12 text-center">
+                                <img src="@imagenPost" class="img-fluid rounded" style="max-width: 300px;" />
+                                <button type="button" class="btn btn-outline-danger mt-3" @onclick="() => BorrarImagen(imagenPost)">
+                                    <i class="bi bi-trash"></i> Borrar Imagen
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+else
+{
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2">Cargando datos...</p>
+    </div>
+}
+
+@code {
+    // Variables de datos
+    public payment Order;
+    public IEnumerable<Costumer> clients;
+    public IEnumerable<Order> Orders;
+    public IEnumerable<Bank> Banks;
+    public string Moneda { get; set; }
+    public Bank banco { get; set; }
+    public Costumer cliente;
+    public Tasa tasa { get; set; }
+    public string Message { get; set; }
+    public string? imagenPost { get; set; }
+    public DateTime Fecha_Creacion { get; set; }
+
+    [Parameter] public int id { get; set; }
+    [Parameter] public EventCallback<string> OnChange { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            Moneda = "$";
+            Banks = await BankSercice.GetAll();
+            clients = await ClientService.GetAll();
+
+            if (id > 0)
+            {
+                Order = await PayOrderService.GetDetails(id);
+                imagenPost = Order.ImageUrl;
+                Order.Debe.ToString("N2", new System.Globalization.CultureInfo("es-ES"));
+            }
+            else
+            {
+                Order = new payment()
+                    {
+                        Fecha_Creacion = DateTime.Now,
+                        Haber = 0,
+                        Status = 1,
+                        Signo = "+"
+                    };
+                tasa = await PayOrderService.GetTasa(Order.Fecha_Creacion);
+                Order.Tasa = tasa.Valor;
+            }
+
+            if (Order.Cod_Banco != 0)
+            {
+                var selectedBank = Banks.FirstOrDefault(b => b.CodBanco == Order.Cod_Banco);
+                if (selectedBank != null)
+                {
+                    Order.Cod_Banco = selectedBank.CodBanco;
+                }
+            }
+
+            Order.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName == nameof(Order.Fecha_Creacion))
+                {
+                    RefreshTasa(Order.Fecha_Creacion);
+                }
+            };
+        }
+        catch (Exception e)
+        {
+            Message = "Hubo un error: " + e.Message;
+        }
+    }
+
+    protected async Task SaveOrder()
+    {
+        banco = Banks.FirstOrDefault(b => b.CodBanco == Order.Cod_Banco);
+        cliente = clients.FirstOrDefault(b => b.Id.ToString() == Order.Cod_Beneficiario);
+        Order.Beneficiario = cliente.TxtApellidos;
+        Order.Usuario = cliente.TxtApenomb;
+        Order.Banco = banco.Nombre;
+        Order.ImageUrl = imagenPost;
+        Order.Sg_Moneda = "$";
+        Order.Monto_Divisa = Order.Debe;
+        await PayOrderService.SavePayOrder(Order);
+        NavigateToHome();
+    }
+
+    protected async Task SaveOrderVendedor()
+    {
+        banco = Banks.FirstOrDefault(b => b.CodBanco == Order.Cod_Banco);
+        cliente = clients.FirstOrDefault(b => b.Id.ToString() == Order.Cod_Beneficiario);
+        Order.Beneficiario = cliente.TxtApellidos;
+        Order.Usuario = cliente.TxtApenomb;
+        Order.Banco = banco.Nombre;
+        Order.ImageUrl = imagenPost;
+        Order.Sg_Moneda = "$";
+        Order.Monto_Divisa = Order.Debe;
+        await PayOrderService.SavePayOrder(Order);
+        NavigationManager.NavigateTo("/pay-list/vendedor");
+    }
+
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/pay-list");
+    }
+
+    protected void Cancel()
+    {
+        NavigateToHome();
+    }
+
+    protected void CancelVendedor()
+    {
+        NavigationManager.NavigateTo("/pay-list/vendedor");
+    }
+
+    protected async Task AddClient()
+    {
+        var dialog = DialogService.Show<ClientDetails>("ClienteDetails");
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            var cliente = (Costumer)result.Data;
+            Order.Cod_Beneficiario = cliente.Id.ToString();
+            Order.Usuario = cliente.TxtApenomb;
+            Order.Beneficiario = cliente.TxtApellidos;
+        }
+    }
+
+    internal async Task BorrarImagen(string urlImagen)
+    {
+        imagenPost = "";
+    }
+
+    protected async Task ManejadorOnSubidaArchivo(InputFileChangeEventArgs e)
+    {
+        var imageFile = e.File;
+        if (imageFile != null)
+        {
+            var resizedFile = await imageFile.RequestImageFileAsync("image/png", 1000, 700);
+            using (var ms = resizedFile.OpenReadStream(resizedFile.Size))
+            {
+                var content = new MultipartFormDataContent();
+                content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                content.Add(new StreamContent(ms, Convert.ToInt32(resizedFile.Size)), "image", imageFile.Name);
+                imagenPost = await PayOrderService.SubidaImagen(content);
+                await OnChange.InvokeAsync(imagenPost);
+            }
+        }
+    }
+
+    private async Task RefreshTasa(DateTime fecha)
+    {
+        try
+        {
+            tasa = await PayOrderService.GetTasa(fecha);
+            Order.Tasa = tasa.Valor;
+            StateHasChanged();
+            Snackbar.Add("Tasa actualizada correctamente", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error al actualizar la tasa: {ex.Message}", Severity.Error);
+        }
+    }
+}

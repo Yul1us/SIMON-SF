@@ -1,0 +1,187 @@
+﻿@page "/Account/Register"
+
+@using System.ComponentModel.DataAnnotations
+@using System.Text
+@using System.Text.Encodings.Web
+@using MailKit.Net.Smtp
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.WebUtilities
+@using Microsoft.Extensions.Options
+@using MimeKit
+@using Simon_SF.Data
+@using Simon_SF.Utilidades
+@using global::Shared
+@inject IOptions<GlobalSettings> GlobalSettings
+@inject UserManager<ApplicationUser> UserManager
+@inject IUserStore<ApplicationUser> UserStore
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IEmailSender<ApplicationUser> EmailSender
+@inject ILogger<Register> Logger
+@inject NavigationManager NavigationManager
+@inject IdentityRedirectManager RedirectManager
+@inject RoleManager<IdentityRole> RolManager
+
+<PageTitle>Registro</PageTitle>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <section class="card shadow-lg">
+                <div class="card-header text-center text-black">
+                    <h3>Crear una nueva cuenta</h3>
+                </div>
+                <div class="card-body">
+                    <StatusMessage Message="@Message" />
+                    <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                        <DataAnnotationsValidator />
+                  
+                        <div class="form-floating mb-3">
+                            <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label for="email" class="form-label">Email</label>
+                            <ValidationMessage For="() => Input.Email" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                            <label for="password" class="form-label">Contraseña</label>
+                            <ValidationMessage For="() => Input.Password" class="text-danger" />
+                        </div>
+                        <div class="form-floating mb-3">
+                            <InputText type="password" @bind-Value="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="confirmar password" />
+                            <label for="confirm-password" class="form-label">Confirmar contraseña</label>
+                            <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
+                        </div>
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">Registrar</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+@code {
+    private IEnumerable<IdentityError>? identityErrors;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+    [SupplyParameterFromQuery]
+    private string? ReturnUrl { get; set; }
+
+    private string? Message => identityErrors is null ? null : $"Error: {string.Join(", ", identityErrors.Select(error => error.Description))}";
+
+    public async Task RegisterUser(EditContext editContext)
+    {
+        var user = CreateUser();
+        await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+        var emailStore = GetEmailStore();
+        await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+        if (!await RolManager.RoleExistsAsync(Roles.Rol_Coordinador))
+        {
+            await RolManager.CreateAsync(new IdentityRole(Roles.Rol_Coordinador));
+            await RolManager.CreateAsync(new IdentityRole(Roles.Rol_Vendedor));
+            await RolManager.CreateAsync(new IdentityRole(Roles.Rol_Cliente));
+            await RolManager.CreateAsync(new IdentityRole(Roles.Rol_Administrador));
+        }
+
+        var result = await UserManager.CreateAsync(user, Input.Password);
+        if (!result.Succeeded)
+        {
+            identityErrors = result.Errors.Select(error => new IdentityError
+                {
+                    Code = error.Code,
+                    Description = TranslateIdentityError(error)
+                });
+            return;
+        }
+
+        Logger.LogInformation("User created a new account with password.");
+        await UserManager.AddToRoleAsync(user, Roles.Rol_Cliente);
+
+        var userId = await UserManager.GetUserIdAsync(user);
+        if (string.IsNullOrEmpty(userId))
+        {
+            identityErrors = new List<IdentityError> { new IdentityError { Description = "Error al obtener el ID del usuario." } };
+            return;
+        }
+
+        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var callbackUrl = $"{NavigationManager.BaseUri}Account/ConfirmEmail?userId={userId}&code={code}&returnUrl={ReturnUrl}";
+        var htmlMessage = $"<p>Confirma tu cuenta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>aquí</a>.</p>";
+
+        SendMail(htmlMessage);
+        await SignInManager.SignInAsync(user, isPersistent: false);
+        RedirectManager.RedirectTo(ReturnUrl);
+    }
+
+    private ApplicationUser CreateUser() => new ApplicationUser();
+
+    private IUserEmailStore<ApplicationUser> GetEmailStore()
+    {
+        if (!UserManager.SupportsUserEmail)
+        {
+            throw new NotSupportedException("El UserStore no admite correos electrónicos.");
+        }
+        return (IUserEmailStore<ApplicationUser>)UserStore;
+    }
+
+    void SendMail(string body)
+    {
+        var email = new MimeMessage();
+        email.From.Add(MailboxAddress.Parse(GlobalSettings.Value.Email));
+        email.To.Add(MailboxAddress.Parse(Input.Email));
+        email.Subject = "Confirmación de cuenta";
+        email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = body };
+
+        using var smtp = new SmtpClient();
+        smtp.Connect(GlobalSettings.Value.ApiBaseUrl, 465, MailKit.Security.SecureSocketOptions.SslOnConnect);
+        smtp.Authenticate(GlobalSettings.Value.Email, GlobalSettings.Value.Password);
+        smtp.Send(email);
+        smtp.Disconnect(true);
+    }
+
+    private string TranslateIdentityError(IdentityError error)
+    {
+        switch (error.Code)
+        {
+            case "DuplicateUserName":
+                return "El nombre de usuario ya está en uso.";
+            case "DuplicateEmail":
+                return "El correo electrónico ya está en uso.";
+            case "InvalidEmail":
+                return "El correo electrónico no es válido.";
+            case "InvalidUserName":
+                return "El nombre de usuario no es válido.";
+            case "PasswordTooShort":
+                return "La contraseña es demasiado corta.";
+            case "PasswordRequiresNonAlphanumeric":
+                return "La contraseña debe contener al menos un carácter no alfanumérico.";
+            case "PasswordRequiresDigit":
+                return "La contraseña debe contener al menos un dígito.";
+            case "PasswordRequiresLower":
+                return "La contraseña debe contener al menos una letra minúscula.";
+            case "PasswordRequiresUpper":
+                return "La contraseña debe contener al menos una letra mayúscula.";
+            default:
+                return error.Description;
+        }
+    }
+
+    private sealed class InputModel
+    {
+        [Required(ErrorMessage = "El correo electrónico es requerido.")]
+        [EmailAddress(ErrorMessage = "El correo electrónico no es válido.")]
+        public string Email { get; set; } = "";
+
+        [Required(ErrorMessage = "La contraseña es requerida.")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "La contraseña debe tener al menos 6 caracteres.")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = "";
+
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "La contraseña y la confirmación de la contraseña no coinciden.")]
+        public string ConfirmPassword { get; set; } = "";
+    }
+}

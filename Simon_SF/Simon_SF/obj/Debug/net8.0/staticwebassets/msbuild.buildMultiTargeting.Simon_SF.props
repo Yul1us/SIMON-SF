@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Simon_SF.props" />
+</Project>

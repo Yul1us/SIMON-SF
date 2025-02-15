@@ -1,0 +1,154 @@
+﻿@page "/pay-list/vendedor"
+@using Blazor.SIMONStore.Client.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ISellerService SellerServices
+@inject IPaymentService OrderService
+@* Como debemos navegar hasta la pagina de las ordenes... *@
+@inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "Vendedor")]
+<AuthorizeView>
+    <Authorized>
+   
+    </Authorized>
+    <NotAuthorized>
+        <p>No tienes acceso a esta página.</p>
+    </NotAuthorized>
+</AuthorizeView>
+@if (seller is not null)
+{
+    <p>Hola @seller.TxtApenomb</p>
+  
+    @if (Orders != null && Orders.Any())
+    {
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-center text-primary mb-4">Listado de Pagos</h3>
+                </div>
+            </div>
+
+            @if (Orders != null && Orders.Any())
+            {
+                <MudPaper Class="p-3">
+                    <MudTable Items="@Orders" Hover="true" Breakpoint="Breakpoint.Sm">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Pagos Registrados</MudText>
+                        </ToolBarContent>
+
+                        @* Cabeceras de la tabla *@
+                        <HeaderContent>
+                            <MudTh class="text-center">Nro.#</MudTh>
+                            <MudTh>Cliente</MudTh>
+                            <MudTh class="text-right">Total</MudTh>
+                            <MudTh class="text-right">Tasa</MudTh>
+                            <MudTh>Fecha</MudTh>
+                            <MudTh>Vendedor</MudTh>
+                            <MudTh>Banco</MudTh>
+                            <MudTh>Referencia</MudTh>
+                            <MudTh class="text-center">Acciones</MudTh>
+                        </HeaderContent>
+
+                        @* Filas de la tabla *@
+                        <RowTemplate Context="OrderContext">
+                            <MudTd DataLabel="Nro.#" Class="text-center">@OrderContext.Id</MudTd>
+                            <MudTd DataLabel="Cliente">@OrderContext.Beneficiario</MudTd>
+                            <MudTd DataLabel="Total" Class="text-right">@OrderContext.Monto_Divisa.ToString("N2", new System.Globalization.CultureInfo("es-ES"))</MudTd>
+                            <MudTd DataLabel="Tasa" Class="text-right">@OrderContext.Tasa.ToString("N2", new System.Globalization.CultureInfo("es-ES"))</MudTd>
+                            <MudTd DataLabel="Fecha">@OrderContext.Fecha.ToString("dd/MM/yyyy")</MudTd>
+                            <MudTd DataLabel="Vendedor">@OrderContext.Usuario</MudTd>
+                            <MudTd DataLabel="Banco">@OrderContext.Banco</MudTd>
+                            <MudTd DataLabel="Referencia">@OrderContext.Referencia</MudTd>
+                            <MudTd DataLabel="Acciones" Class="text-center">
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                               Color="Color.Primary"
+                                               Size="Size.Medium"
+                                               OnClick="@(() => Edit(OrderContext.Id))"
+                                               ToolTip="Editar" />
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                               Color="Color.Error"
+                                               Size="Size.Medium"
+                                               OnClick="@(() => Delete(OrderContext.Id))"
+                                               ToolTip="Eliminar" />
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudPaper>
+            }
+            else
+            {
+                <div class="text-center mt-5">
+                    <MudText Typo="Typo.h6" Color="Color.Secondary">No hay pagos registrados</MudText>
+                    <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Large" Color="Color.Secondary" />
+                </div>
+            }
+        </div>
+
+        @* Botón flotante para agregar un nuevo pago *@
+        <div class="fixed-bottom-right">
+            <MudTooltip Text="Agregar Pago" Placement="Placement.Top" Arrow="true">
+                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Add" Size="Size.Large" OnClick="NavigateToOtherPage" />
+            </MudTooltip>
+        </div>
+
+        <style>
+            .fixed-bottom-right {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+
+            .content-container {
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 8px;
+            }
+        </style>
+    }
+}
+else
+{
+    <p>No hay pagos disponibles</p>
+}
+@code {
+    public string email { get; set; }
+    public Seller seller { get; set; }
+    public List<payment> Orders;
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            email = user.Identity.Name ?? "Email no disponible";
+          
+
+        }
+        else
+        {
+            email = "No autenticado";
+        }
+
+        seller = await SellerServices.GetByEmail(user.Identity.Name!);
+        Orders = (List<payment>)await OrderService.GetAllBySeller(seller.TxtApenomb);
+    }
+    protected async Task Edit(int id)
+    {
+        NavigationManager.NavigateTo($"/PayDetails/{id}");
+    }
+
+    //Metodo para Eliminar una Orden.
+    protected async Task Delete(int id)
+    {
+        await OrderService.DeletePayOrder(id); //Se Borra de la BD
+        Orders.RemoveAll(p => p.Id == id);  //Se Borra de la Pantalla
+    }
+  
+    private void NavigateToOtherPage()
+    {
+        NavigationManager.NavigateTo("/PayDetails"); // Cambia "/new-page" por la ruta de la página a la que quieres redirigir }
+    }
+}

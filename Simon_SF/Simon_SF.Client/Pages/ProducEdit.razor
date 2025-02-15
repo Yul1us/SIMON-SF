@@ -1,0 +1,141 @@
+﻿@page "/productedit/{id:int}"
+@using System.Net.Http.Headers
+@inject IProductService ProductService
+@inject NavigationManager NavigationManager
+
+@using MudBlazor
+@attribute [Authorize(Roles = "Administrador,Coordinador")]
+<MudPaper Class="pa-4 mx-auto" Style="max-width: 800px;">
+    @if (product != null)
+    {
+        <MudText Typo="Typo.h5" Class="mb-4" Align="Align.Center">Editar Producto</MudText>
+
+        <EditForm Model="@product" OnValidSubmit="HandleValidSubmit">
+            <MudGrid>
+                <!-- ID -->
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="product.Id" Label="ID" Variant="Variant.Outlined" Disabled="true" />
+                </MudItem>
+
+                <!-- Name -->
+                <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="product.Name" Label="Name" Variant="Variant.Outlined" Required="true" />
+                </MudItem>
+
+                <!-- Price -->
+                <MudItem xs="12" sm="6">
+                    <MudNumericField @bind-Value="product.Price" Label="Price" Variant="Variant.Outlined" Required="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" />
+                </MudItem>
+
+                <!-- Short Description -->
+                <MudItem xs="12" sm="12">
+                    <MudTextField @bind-Value="product.DescripcionCorta" Label="Short Description" Variant="Variant.Outlined" Required="true" />
+                </MudItem>
+
+                <!-- Full Description (no cambios en InputTextArea) -->
+                <MudItem xs="12" sm="12">
+                    <label for="descripcionProducto" class="form-label">Full Description</label>
+                    <InputTextArea id="descripcionProducto" class="form-control" @bind-Value="product.DescripcionProducto" />
+                </MudItem>
+
+                <!-- Product SIMON ID -->
+                <MudItem xs="12" sm="6">
+                    <MudNumericField @bind-Value="product.ProductSIMONId" Label="SIMON ID" Variant="Variant.Outlined" Disabled="true" />
+                </MudItem>
+
+                <!-- Image Upload (no cambios en InputFile) -->
+                <MudItem xs="12" sm="12">
+                    <MudText Typo="Typo.subtitle1">Product Image</MudText>
+                    <MudPaper Class="pa-2" Elevation="1">
+                        <label for="fileUpload" class="form-label">Upload Image</label>
+                        <InputFile OnChange="@ManejadorOnSubidaArchivo"></InputFile>
+                        <br />
+                        @if (!string.IsNullOrEmpty(imagenPost))
+                        {
+                            <div>
+                                <img src="@imagenPost" style="width:300px" class="mt-3" />
+                            </div>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" Class="mt-2" OnClick="@(() => BorrarImagen(imagenPost))">
+                                <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mr-1" /> Delete
+                            </MudButton>
+                        }
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+
+            <!-- Action Buttons -->
+            <MudGrid Class="mt-4">
+                <MudItem xs="6">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Secondary" FullWidth="true" OnClick="Cancel">
+                        Cancel
+                    </MudButton>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" ButtonType="ButtonType.Submit">
+                        Save
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    }
+    else
+    {
+        <MudProgressCircular Class="d-flex justify-center" Color="Color.Primary" Indeterminate="true" />
+    }
+</MudPaper>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    public Product product { get; set; }
+    public string Message { get; set; }
+    public string imagenPost { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        product = await ProductService.GetDetails(id);
+        imagenPost = product?.ImageUrl;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (!string.IsNullOrEmpty(imagenPost))
+        {
+            product.ImageUrl = imagenPost;
+        }
+
+        await ProductService.SaveOrder(product);
+        NavigateToHome();
+    }
+
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/product-list");
+    }
+
+    private async Task ManejadorOnSubidaArchivo(InputFileChangeEventArgs e)
+    {
+        var imageFile = e.File;
+        if (imageFile != null)
+        {
+            var resizedFile = await imageFile.RequestImageFileAsync("image/png", 1000, 700);
+            using (var ms = resizedFile.OpenReadStream(resizedFile.Size))
+            {
+                var content = new MultipartFormDataContent();
+                content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+                content.Add(new StreamContent(ms, Convert.ToInt32(resizedFile.Size)), "image", imageFile.Name);
+                imagenPost = await ProductService.SubidaImagen(content);
+            }
+        }
+    }
+
+    private void BorrarImagen(string urlImagen)
+    {
+        imagenPost = null;
+    }
+
+    protected void Cancel()
+    {
+        NavigateToHome();
+    }
+}
