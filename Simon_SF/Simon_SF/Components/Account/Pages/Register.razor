@@ -109,9 +109,118 @@
         var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         var callbackUrl = $"{NavigationManager.BaseUri}Account/ConfirmEmail?userId={userId}&code={code}&returnUrl={ReturnUrl}";
-        var htmlMessage = $"<p>Confirma tu cuenta <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>aquí</a>.</p>";
+        var htmlMessage = $@"
+            <!DOCTYPE html>
+            <html lang=""es"">
+            <head>
+                <meta charset=""UTF-8"">
+                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                <title>Confirmación de Cuenta</title>
+                <style>
+                    body {{
+                        font-family: 'Roboto', Arial, sans-serif;
+                        background-color: #f4f7fc;
+                        color: #4a4a4a;
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                    }}
+                    .container {{
+                        max-width: 600px;
+                        background-color: #ffffff;
+                        border-radius: 12px;
+                        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+                        overflow: hidden;
+                        margin: 20px;
+                    }}
+                    .header {{
+                        background-color: #007BFF;
+                        color: #ffffff;
+                        text-align: center;
+                        padding: 25px;
+                    }}
+                    .header h1 {{
+                        margin: 0;
+                        font-size: 26px;
+                        font-weight: bold;
+                    }}
+                    .content {{
+                        padding: 20px;
+                        line-height: 1.8;
+                        font-size: 16px;
+                        color: #333333;
+                    }}
+                    .content p {{
+                        margin: 0 0 20px;
+                    }}
+                    .button-container {{
+                        text-align: center;
+                        margin-top: 20px;
+                    }}
+                    .button {{
+                        background-color: #007BFF;
+                        color: #ffffff;
+                        padding: 12px 24px;
+                        text-decoration: none;
+                        border-radius: 5px;
+                        font-size: 16px;
+                        font-weight: bold;
+                        transition: background-color 0.3s ease;
+                        display: inline-block;
+                    }}
+                    .button:hover {{
+                        background-color: #0056b3;
+                    }}
+                    .footer {{
+                        text-align: center;
+                        font-size: 14px;
+                        color: #666666;
+                        padding: 15px 20px;
+                        border-top: 1px solid #dddddd;
+                    }}
+                    .footer a {{
+                        color: #007BFF;
+                        text-decoration: none;
+                    }}
+                    .footer a:hover {{
+                        text-decoration: underline;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class=""container"">
+                    <div class=""header"">
+                        <h1>Confirmación de Cuenta</h1>
+                    </div>
+                    <div class=""content"">
+                        <p>Hola,</p>
+
+                        <p>Gracias por registrarte en <strong>Simon_SF</strong>. Por favor, confirma tu cuenta haciendo clic en el botón de abajo:</p>
+                        <div class=""button-container"">
+                            <a href=""{HtmlEncoder.Default.Encode(callbackUrl)}"" class=""button"">Confirmar Cuenta</a>
+                        </div>
+                        <p>Si no solicitaste esta confirmación, puedes ignorar este correo.</p>
+                        <p>¡Gracias por unirte a nuestra comunidad!</p>
+                    </div>
+                    <div class=""footer"">
+                        &copy; 2025 Simon_SF. Todos los derechos reservados. <br>
+                        <a href="""">Términos y condiciones</a> |
+                        <a href="""">Política de privacidad</a>
+                    </div>
+                </div>
+            </body>
+            </html>";
 
         SendMail(htmlMessage);
+        if (UserManager.Options.SignIn.RequireConfirmedAccount)
+        {
+            RedirectManager.RedirectTo(
+                "Account/RegisterConfirmation",
+                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
+        }
         await SignInManager.SignInAsync(user, isPersistent: false);
         RedirectManager.RedirectTo(ReturnUrl);
     }

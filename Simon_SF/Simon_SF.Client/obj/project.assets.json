@@ -493,7 +493,7 @@
           "build/Microsoft.NET.ILLink.Tasks.props": {}
         }
       },
-      "Microsoft.NET.Sdk.WebAssembly.Pack/9.0.2": {
+      "Microsoft.NET.Sdk.WebAssembly.Pack/8.0.13": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.props": {},
@@ -1044,7 +1044,7 @@
           "build/Microsoft.NET.ILLink.Tasks.props": {}
         }
       },
-      "Microsoft.NET.Sdk.WebAssembly.Pack/9.0.2": {
+      "Microsoft.NET.Sdk.WebAssembly.Pack/8.0.13": {
         "type": "package",
         "build": {
           "build/Microsoft.NET.Sdk.WebAssembly.Pack.props": {},
@@ -1872,10 +1872,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.NET.Sdk.WebAssembly.Pack/9.0.2": {
-      "sha512": "svOs6YArbcpL06ZWj+b4hNVlJC5m37ydSgS+1XJWJzQu5fdT7ToEOaik1yiNo9AD357PBEiUJWTlrIcwdF8IeA==",
+    "Microsoft.NET.Sdk.WebAssembly.Pack/8.0.13": {
+      "sha512": "zdRHxywQXvf/Smwd48y4RUL/v9Xphw0EJzEqYfjCeJgYjZ/+LdqMzQaO2HO9PShLQ63hdfWzw/LBI8fGoGrD+w==",
       "type": "package",
-      "path": "microsoft.net.sdk.webassembly.pack/9.0.2",
+      "path": "microsoft.net.sdk.webassembly.pack/8.0.13",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
@@ -1886,7 +1886,6 @@
         "WasmAppHost/BrowserDebugHost.deps.json",
         "WasmAppHost/BrowserDebugHost.dll",
         "WasmAppHost/BrowserDebugHost.runtimeconfig.json",
-        "WasmAppHost/BrowserDebugHost.staticwebassets.endpoints.json",
         "WasmAppHost/BrowserDebugProxy.dll",
         "WasmAppHost/Microsoft.CodeAnalysis.CSharp.Scripting.dll",
         "WasmAppHost/Microsoft.CodeAnalysis.CSharp.dll",
@@ -1899,19 +1898,48 @@
         "WasmAppHost/WasmAppHost.deps.json",
         "WasmAppHost/WasmAppHost.dll",
         "WasmAppHost/WasmAppHost.runtimeconfig.json",
-        "WasmAppHost/WasmAppHost.staticwebassets.endpoints.json",
         "build/Microsoft.NET.Sdk.WebAssembly.Browser.props",
         "build/Microsoft.NET.Sdk.WebAssembly.Browser.targets",
         "build/Microsoft.NET.Sdk.WebAssembly.Pack.props",
         "build/Microsoft.NET.Sdk.WebAssembly.Pack.targets",
         "build/Wasm.web.config",
-        "build/browser.runtimeconfig.template.json",
-        "microsoft.net.sdk.webassembly.pack.9.0.2.nupkg.sha512",
+        "microsoft.net.sdk.webassembly.pack.8.0.13.nupkg.sha512",
         "microsoft.net.sdk.webassembly.pack.nuspec",
+        "tools/net472/Microsoft.Bcl.AsyncInterfaces.dll",
+        "tools/net472/Microsoft.Build.dll",
+        "tools/net472/Microsoft.IO.Redist.dll",
         "tools/net472/Microsoft.NET.Sdk.WebAssembly.Pack.Tasks.dll",
+        "tools/net472/Microsoft.NET.StringTools.dll",
         "tools/net472/Microsoft.NET.WebAssembly.Webcil.dll",
-        "tools/net9.0/Microsoft.NET.Sdk.WebAssembly.Pack.Tasks.dll",
-        "tools/net9.0/Microsoft.NET.WebAssembly.Webcil.dll"
+        "tools/net472/Microsoft.VisualStudio.Setup.Configuration.Interop.dll",
+        "tools/net472/System.Buffers.dll",
+        "tools/net472/System.Collections.Immutable.dll",
+        "tools/net472/System.Configuration.ConfigurationManager.dll",
+        "tools/net472/System.Memory.dll",
+        "tools/net472/System.Numerics.Vectors.dll",
+        "tools/net472/System.Reflection.Metadata.dll",
+        "tools/net472/System.Reflection.MetadataLoadContext.dll",
+        "tools/net472/System.Runtime.CompilerServices.Unsafe.dll",
+        "tools/net472/System.Security.AccessControl.dll",
+        "tools/net472/System.Security.Permissions.dll",
+        "tools/net472/System.Security.Principal.Windows.dll",
+        "tools/net472/System.Text.Encodings.Web.dll",
+        "tools/net472/System.Text.Json.dll",
+        "tools/net472/System.Threading.Tasks.Dataflow.dll",
+        "tools/net472/System.Threading.Tasks.Extensions.dll",
+        "tools/net472/System.ValueTuple.dll",
+        "tools/net8.0/Microsoft.Build.dll",
+        "tools/net8.0/Microsoft.NET.Sdk.WebAssembly.Pack.Tasks.dll",
+        "tools/net8.0/Microsoft.NET.StringTools.dll",
+        "tools/net8.0/Microsoft.NET.WebAssembly.Webcil.dll",
+        "tools/net8.0/Microsoft.Win32.SystemEvents.dll",
+        "tools/net8.0/System.Configuration.ConfigurationManager.dll",
+        "tools/net8.0/System.Diagnostics.EventLog.dll",
+        "tools/net8.0/System.Drawing.Common.dll",
+        "tools/net8.0/System.Reflection.MetadataLoadContext.dll",
+        "tools/net8.0/System.Security.Cryptography.ProtectedData.dll",
+        "tools/net8.0/System.Security.Permissions.dll",
+        "tools/net8.0/System.Windows.Extensions.dll"
       ]
     },
     "MudBlazor/7.15.0": {
@@ -1980,30 +2008,25 @@
       "Microsoft.AspNetCore.Components.WebAssembly >= 8.0.10",
       "Microsoft.AspNetCore.Components.WebAssembly.Authentication >= 8.0.10",
       "Microsoft.NET.ILLink.Tasks >= 8.0.13",
-      "Microsoft.NET.Sdk.WebAssembly.Pack >= 9.0.2",
+      "Microsoft.NET.Sdk.WebAssembly.Pack >= 8.0.13",
       "MudBlazor >= 7.15.0",
       "Shared >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\JULIO\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Usuario\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj",
+      "projectUniqueName": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj",
       "projectName": "Simon_SF.Client",
-      "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj",
-      "packagesPath": "C:\\Users\\JULIO\\.nuget\\packages\\",
-      "outputPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\obj\\",
+      "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj",
+      "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\JULIO\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2018,8 +2041,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj": {
-              "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj"
+            "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj": {
+              "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj"
             }
           }
         }
@@ -2033,8 +2056,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -2057,7 +2079,7 @@
           "Microsoft.NET.Sdk.WebAssembly.Pack": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "[9.0.2, )",
+            "version": "[8.0.13, )",
             "autoReferenced": true
           },
           "MudBlazor": {
@@ -2087,7 +2109,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {
