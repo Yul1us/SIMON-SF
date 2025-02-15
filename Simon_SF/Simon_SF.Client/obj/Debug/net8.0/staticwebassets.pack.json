@@ -1,71 +1,71 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\obj\\Debug\\net8.0\\compressed\\8cvietw1he.gz",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\obj\\Debug\\net8.0\\compressed\\8cvietw1he.gz",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Simon_SF.Client.bundle.scp.css",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Simon_SF.Client.bundle.scp.css",
       "PackagePath": "staticwebassets\\Simon_SF.Client.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0001.jpg",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0001.jpg",
       "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0001.jpg"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0002.jpg",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0002.jpg",
       "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0002.jpg"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0003.jpg",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0003.jpg",
       "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0003.jpg"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0004.jpg",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0004.jpg",
       "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0004.jpg"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0005.jpg",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0005.jpg",
       "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0005.jpg"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0006.jpg",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0006.jpg",
       "PackagePath": "staticwebassets\\ImagenesBanner(1)\\catalogo LFL (2)_241203_175351 (1)_page-0006.jpg"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\SIMON_SF_V01.png",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\SIMON_SF_V01.png",
       "PackagePath": "staticwebassets\\Imagenes\\SIMON_SF_V01.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\SIMON_SF_V02.png",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\SIMON_SF_V02.png",
       "PackagePath": "staticwebassets\\Imagenes\\SIMON_SF_V02.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\Simon_new.jpeg",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\Simon_new.jpeg",
       "PackagePath": "staticwebassets\\Imagenes\\Simon_new.jpeg"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\foto.jpeg",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\foto.jpeg",
       "PackagePath": "staticwebassets\\Imagenes\\foto.jpeg"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\simon.png",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\simon.png",
       "PackagePath": "staticwebassets\\Imagenes\\simon.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\simon2.png",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\Imagenes\\simon2.png",
       "PackagePath": "staticwebassets\\Imagenes\\simon2.png"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\appsettings.Development.json",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\appsettings.Development.json",
       "PackagePath": "staticwebassets\\appsettings.Development.json"
     },
     {
-      "Id": "C:\\Users\\Usuario\\source\\repos\\Simon_SF_V2_ROTO\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\wwwroot\\appsettings.json",
+      "Id": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\wwwroot\\appsettings.json",
       "PackagePath": "staticwebassets\\appsettings.json"
     },
     {

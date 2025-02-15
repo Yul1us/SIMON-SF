@@ -38,7 +38,7 @@
 
    # Visual Studio 2022
    .vs/
-
+ 
    # Build results
    [Bb]in/
    [Oo]bj/

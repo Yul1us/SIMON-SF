@@ -16,157 +16,155 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = browser
 build_property.RootNamespace = Simon_SF.Client
 build_property.RootNamespace = Simon_SF.Client
-build_property.ProjectDir = F:\OneDrive\SMO_DEV_01\Simon_SF_V2_GITHUB\Simon_SF_V2\Simon_SF\Simon_SF.Client\
+build_property.ProjectDir = C:\Users\Usuario\Documents\SIMON-SF\Simon_SF\Simon_SF.Client\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = false
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = F:\OneDrive\SMO_DEV_01\Simon_SF_V2_GITHUB\Simon_SF_V2\Simon_SF\Simon_SF.Client
+build_property.MSBuildProjectDirectory = C:\Users\Usuario\Documents\SIMON-SF\Simon_SF\Simon_SF.Client
 build_property._RazorSourceGeneratorDebug = 
-build_property.EffectiveAnalysisLevelStyle = 8.0
-build_property.EnableCodeStyleSeverity = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/Auth.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/Auth.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/ClientDetails.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/ClientDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50RGV0YWlscy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/CostumerDialog.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/CostumerDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29zdHVtZXJEaWFsb2cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/CostumersList.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/CostumersList.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29zdHVtZXJzTGlzdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/Counter.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/DetallesDialog.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/DetallesDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGV0YWxsZXNEaWFsb2cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/Dialog.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/Dialog.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGlhbG9nLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/GestionRoles.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/GestionRoles.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvblJvbGVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/GestionVendedores.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/GestionVendedores.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VzdGlvblZlbmRlZG9yZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/Home.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/Inicio.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/Inicio.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5pY2lvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/OrderDetails.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/OrderDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZXJEZXRhaWxzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/OrderListVendedor.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/OrderListVendedor.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZXJMaXN0VmVuZGVkb3IucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/OrdersList - Copia.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/OrdersList - Copia.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZXJzTGlzdCAtIENvcGlhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/OrdersList.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/OrdersList.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZXJzTGlzdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/PayDetails.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/PayDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5RGV0YWlscy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/PayList.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/PayList.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5TGlzdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/PayListVendedor.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/PayListVendedor.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5TGlzdFZlbmRlZG9yLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/PayOrderDetails.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/PayOrderDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5T3JkZXJEZXRhaWxzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/PayOrderList .razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/PayOrderList .razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGF5T3JkZXJMaXN0IC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/ProducEdit.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/ProducEdit.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjRWRpdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/ProductDetails - Copia.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/ProductDetails - Copia.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdERldGFpbHMgLSBDb3BpYS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/ProductDetails.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/ProductDetails.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdERldGFpbHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/ProductList - Copia.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/ProductList - Copia.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdExpc3QgLSBDb3BpYS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/ProductList.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/ProductList.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdExpc3QucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/Reclamaciones.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/Reclamaciones.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjbGFtYWNpb25lcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/RolDialog.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/RolDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUm9sRGlhbG9nLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/UserDialog.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/UserDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlckRpYWxvZy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/VendedorDialog.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/VendedorDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVuZGVkb3JEaWFsb2cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Pages/Weather.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/RedirectToLogin.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/RedirectToLogin.razor]
 build_metadata.AdditionalFiles.TargetPath = UmVkaXJlY3RUb0xvZ2luLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Routes.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Routes.razor]
 build_metadata.AdditionalFiles.TargetPath = Um91dGVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/_Imports.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Layout/MainLayout.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-yzdpkh12r2
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Layout/NavMenu.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-7at3xtut4y
 
-[F:/OneDrive/SMO_DEV_01/Simon_SF_V2_GITHUB/Simon_SF_V2/Simon_SF/Simon_SF.Client/Layout/ResponsiveLayout.razor]
+[C:/Users/Usuario/Documents/SIMON-SF/Simon_SF/Simon_SF.Client/Layout/ResponsiveLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XFJlc3BvbnNpdmVMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-0jgb9zg7a2

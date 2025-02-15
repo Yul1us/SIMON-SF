@@ -346,6 +346,9 @@ else
                 Order = await OrderService.GetDetails(id);
                 cliente = await ClientService.GetDetails(Order.ClientId);
                 total = Order.Total;
+                tasa = await OrderService.GetTasa(Order.Fecha_Dia);
+                Order.Tasa_Cambio = tasa.Valor;
+                Order.Fecha_Dia = tasa.Dia;
             }
             else
             {
