@@ -24,25 +24,23 @@ namespace Blazor.SIMONStore.Repositories
 
         public async Task DeletePayment(int id)
         {
-            //Paso1: La Consulta de Acción Usando Dapper
-            var sql = @"
-                         DELETE FROM Tab_Bancos_Tran
-                         WHERE Id = @Id ";
+            var sql = @" UPDATE  Tab_Bancos_Tran SET Status = 9 WHERE Id = @Id";
 
-
-            //Paso2: Como es un DELETE -> Se usa ExecuteAsync
+            //Paso2: Como es un INSERT -> Se usa ExecuteAsync
             //ya que ExecuteAsync Retorna el Numero de Filas Afectadas...
-            //No hace falta el Retorn, y no retotnaremos nada, ya que estamos en un Task.
             await _dbConnection.ExecuteAsync(sql,
-                new { Id = @id });
+            new { Id = @id });
+            //Como Task<bool> entonces se evalua y retorna un true o false -> return result > 0;
+            //El ExecuteAsync siempre retorna el numero de filas afectadas...
+
         }
-    
+
 
         public async Task<IEnumerable<payment>> GetAll()
         {
             var sql = @"SELECT   Id, Fecha, Referencia, Descripcion, Cod_Beneficiario, Beneficiario, Cod_Banco, Banco, Sg_Moneda, Debe, Haber, Status, Usuario, Fecha_Creacion, Signo, ImageUrl, Tasa, Monto_Divisa, Comentario
                         FROM     Tab_Bancos_Tran
-                        WHERE   (Signo = '+')
+                        WHERE   (Signo = '+') AND Status != 9 
                         ORDER BY Id DESC";
             return await _dbConnection.QueryAsync<payment>(sql, new { });
         }
@@ -51,7 +49,7 @@ namespace Blazor.SIMONStore.Repositories
         {
             var sql = @"SELECT  Id, Fecha, Referencia, Descripcion, Cod_Beneficiario, Beneficiario, Cod_Banco, Banco, Sg_Moneda, Debe, Haber, Status, Usuario, Fecha_Creacion, Signo , ImageUrl,Tasa, Monto_Divisa, Comentario
                         FROM   Tab_Bancos_Tran
-                        WHERE (Signo = '+') AND Cod_Beneficiario=@Id ORDER BY Id DESC";
+                        WHERE (Signo = '+') AND Status != 9 AND Cod_Beneficiario=@Id ORDER BY Id DESC";
             return await _dbConnection.QueryAsync<payment>(sql, new { Id = id });
         }
 
@@ -59,7 +57,7 @@ namespace Blazor.SIMONStore.Repositories
         {
             var sql = @"SELECT  Id, Fecha, Referencia, Descripcion, Cod_Beneficiario, Beneficiario, Cod_Banco, Banco, Sg_Moneda, Debe, Haber, Status, Usuario, Fecha_Creacion, Signo, ImageUrl, Tasa, Monto_Divisa, Comentario
                         FROM   Tab_Bancos_Tran
-                        WHERE (Signo = '+') AND usuario=@Usuario ORDER BY Id DESC";
+                        WHERE (Signo = '+') AND Status != 9 AND usuario=@Usuario ORDER BY Id DESC";
             return await _dbConnection.QueryAsync<payment>(sql, new { Usuario = usuario });
         }
 
@@ -67,7 +65,7 @@ namespace Blazor.SIMONStore.Repositories
         {
             var sql = @"SELECT  Id, Fecha, Referencia, Descripcion, Cod_Beneficiario, Beneficiario, Cod_Banco, Banco, Sg_Moneda, Debe, Haber, Status, Usuario, Fecha_Creacion, Signo, ImageUrl, Tasa, Monto_Divisa, Comentario
                         FROM   Tab_Bancos_Tran
-                        WHERE (Signo = '+') AND Id=@Id";
+                        WHERE (Signo = '+') AND Status != 9 AND Id=@Id";
             return await _dbConnection.QueryFirstOrDefaultAsync<payment>(sql, new { Id = id });
         }
 

@@ -70,9 +70,10 @@
                         <div class="col-md-12 text-center">
                             <AuthorizeView Roles="Administrador,Coordinador">
                                 <Authorized Context="authContext">
-                                    <button type="button" class="btn btn-success btn-lg" @onclick="SaveOrder">
+                                    <button type="button" class="btn btn-success btn-lg" @onclick="SaveOrder" disabled="@(string.IsNullOrEmpty(Order.Cod_Beneficiario))">
                                         <i class="bi bi-save"></i> Guardar
                                     </button>
+
                                     <button type="button" class="btn btn-secondary btn-lg ms-3" @onclick="Cancel">
                                         <i class="bi bi-x-circle"></i> Cancelar
                                     </button>
@@ -81,9 +82,10 @@
 
                             <AuthorizeView Roles="Vendedor">
                                 <Authorized Context="authVendedorContext">
-                                    <button type="button" class="btn btn-success btn-lg" @onclick="SaveOrderVendedor">
+                                    <button type="button" class="btn btn-success btn-lg" @onclick="SaveOrderVendedor" disabled="@(string.IsNullOrEmpty(Order.Cod_Beneficiario))">
                                         <i class="bi bi-save"></i> Guardar
                                     </button>
+
                                     <button type="button" class="btn btn-secondary btn-lg ms-3" @onclick="CancelVendedor">
                                         <i class="bi bi-x-circle"></i> Cancelar
                                     </button>
@@ -115,6 +117,7 @@
                                 <label class="form-label">Cliente</label>
                                 <div class="input-group">
                                     <InputSelect class="form-control" @bind-Value="@Order.Cod_Beneficiario" disabled>
+                                        <option >Seleccione una opcion</option>
                                         @foreach (var item in clients)
                                         {
                                             <option value="@item.Id">@item.TxtApellidos</option>
@@ -128,7 +131,7 @@
                         </div>
                     </div>
 
-                    @* Selección del método de pago *@
+                    @* Selección del método de pago y moneda *@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -141,14 +144,41 @@
                                 </InputSelect>
                             </div>
                         </div>
-                    </div>
+                        <div class="col-md-6">
+                            <div class="form-group text-center">
+                                <label class="form-label fw-bold">Moneda del Total</label>
+                                <div class="btn-group btn-group-lg shadow-sm" role="group">
+                                    <button type="button"
+                                            class="btn @(Moneda1 == "Bs" ? "btn-success shadow" : "btn-outline-success") fw-bold px-4"
+                                            @onclick="() => CambiarMoneda('B')">
+                                        <i class="bi bi-cash-coin"></i> Bs
+                                    </button>
+                                    <button type="button"
+                                            class="btn @(Moneda1 == "$" ? "btn-primary shadow" : "btn-outline-primary") fw-bold px-4"
+                                            @onclick="() => CambiarMoneda('$')">
+                                        <i class="bi bi-currency-dollar"></i> $
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
+                    </div>
                     @* Total a pagar y referencia *@
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Total</label>
-                                <input class="form-control" @bind-value="Order.Debe" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Total en Bs</label>
+                                        <input class="form-control" @bind-value="Order.Debe"  disabled="@(Moneda1 == "$")" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Total en $</label>
+                                        <input class="form-control" @bind-value="Order.Monto_Divisa" disabled="@(Moneda1 == "Bs")" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -161,7 +191,6 @@
                             }
                         </div>
                     </div>
-
                     @* Comentarios *@
                     <div class="row mb-4">
                         <div class="col-md-12">
@@ -284,8 +313,18 @@ else
         Order.Usuario = cliente.TxtApenomb;
         Order.Banco = banco.Nombre;
         Order.ImageUrl = imagenPost;
-        Order.Sg_Moneda = "$";
-        Order.Monto_Divisa = Order.Debe;
+        Order.Sg_Moneda = Moneda1; // Guardamos la moneda seleccionada
+
+        // Conversión de monto según la moneda seleccionada
+        if (Moneda1 == "Bs")
+        {
+            Order.Monto_Divisa = Order.Debe / Order.Tasa; // Convertir a dólares
+        }
+        else
+        {
+            Order.Debe = Order.Monto_Divisa * Order.Tasa; // Convertir a bolívares
+        }
+
         await PayOrderService.SavePayOrder(Order);
         NavigateToHome();
     }
@@ -298,8 +337,18 @@ else
         Order.Usuario = cliente.TxtApenomb;
         Order.Banco = banco.Nombre;
         Order.ImageUrl = imagenPost;
-        Order.Sg_Moneda = "$";
-        Order.Monto_Divisa = Order.Debe;
+        Order.Sg_Moneda = Moneda1; // Guardamos la moneda seleccionada
+
+        // Conversión de monto según la moneda seleccionada
+        if (Moneda1 == "Bs")
+        {
+            Order.Monto_Divisa = Order.Debe / Order.Tasa; // Convertir a dólares
+        }
+        else
+        {
+            Order.Debe = Order.Monto_Divisa * Order.Tasa; // Convertir a bolívares
+        }
+
         await PayOrderService.SavePayOrder(Order);
         NavigationManager.NavigateTo("/pay-list/vendedor");
     }
@@ -366,6 +415,25 @@ else
         catch (Exception ex)
         {
             Snackbar.Add($"Error al actualizar la tasa: {ex.Message}", Severity.Error);
+        }
+    }
+    // Variable para almacenar la moneda seleccionada
+    public string Moneda1 { get; set; } = "$"; // Por defecto en dólares
+
+    // Método para cambiar la moneda
+    private void CambiarMoneda(char nuevaMoneda)
+    {
+        if (nuevaMoneda == 'B')
+        {
+            Moneda1 = "Bs";
+            // Convertir el total a bolívares si es necesario
+     
+        }
+        else
+        {
+            Moneda1 = "$";
+            // Convertir el total a dólares si es necesario
+          
         }
     }
 }

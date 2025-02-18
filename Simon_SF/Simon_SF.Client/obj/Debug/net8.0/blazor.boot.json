@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Simon_SF.Client",
   "resources": {
-    "hash": "sha256-oje+fQb9B0Z4HV/0KYOfClqx//HQo7+L/csnEmgV3JM=",
+    "hash": "sha256-bYuCr4QbwbSNqHyYZCvBqjIj3+t+adnkzVi9R4F5tGk=",
     "jsModuleNative": {
       "dotnet.native.8.0.13.klukj80wwx.js": "sha256-xNQsYHtL1vcbrVTHDZAwJM4WovpoyjsrM2C6FQ8cW1w="
     },
@@ -213,12 +213,12 @@
       "mscorlib.wasm": "sha256-RAf5jgXLg+06C4tJ3CabxAZaVjCN2/+E6fxRjRN8yHk=",
       "netstandard.wasm": "sha256-KCAE8RQwTurP5pGnGF819qf9sK++2O0rXzt6tOjlfi8=",
       "System.Private.CoreLib.wasm": "sha256-LQqLbHgeEX4HONx7GwIxGgmzIXP6n2OPxqnq+/4Tyqk=",
-      "Shared.wasm": "sha256-T2GsEay0mXLHc9JY5b+iKdJoHaiM5FFWa1pz0++5C8g=",
-      "Simon_SF.Client.wasm": "sha256-oSRIV4+gtZI3bH5w/YTnnZPttZ7amHVUktTpbZNK6RA="
+      "Shared.wasm": "sha256-uetWWj+OsHHzYT99Vx5vjVwWKpQ1Gw41xpEl0guCBHA=",
+      "Simon_SF.Client.wasm": "sha256-Ob8+jjJ/CrDBgpUMxetW4w6Cd422gTKUBV1/WkPVIIE="
     },
     "pdb": {
-      "Shared.pdb": "sha256-XpkYvPDAZDSI7v38VWMePPQfj5w+Zsxy02HP8ZJYIvY=",
-      "Simon_SF.Client.pdb": "sha256-JZkclCUdEswQnqGBLVpGlQdP5WpSrLjFKMMPFgPsZiE="
+      "Shared.pdb": "sha256-V/a+HHR3aCc/Miftfa+ZcNcsa5dRZ7NJN+ewfj55iGg=",
+      "Simon_SF.Client.pdb": "sha256-fT1CvAzOata1tC+eOOeFSdcksdgpHWba+kfc2tVEJyI="
     }
   },
   "cacheBootResources": true,

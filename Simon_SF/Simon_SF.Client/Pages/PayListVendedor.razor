@@ -85,33 +85,35 @@
             }
         </div>
 
-        @* Botón flotante para agregar un nuevo pago *@
-        <div class="fixed-bottom-right">
-            <MudTooltip Text="Agregar Pago" Placement="Placement.Top" Arrow="true">
-                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Add" Size="Size.Large" OnClick="NavigateToOtherPage" />
-            </MudTooltip>
-        </div>
-
-        <style>
-            .fixed-bottom-right {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                z-index: 1000;
-            }
-
-            .content-container {
-                padding: 20px;
-                background-color: #f9f9f9;
-                border-radius: 8px;
-            }
-        </style>
+     
     }
 }
 else
 {
+  
     <p>No hay pagos disponibles</p>
 }
+@* Botón flotante para agregar un nuevo pago *@
+<div class="fixed-bottom-right">
+    <MudTooltip Text="Agregar Pago" Placement="Placement.Top" Arrow="true">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Outlined.Add" Size="Size.Large" OnClick="NavigateToOtherPage" />
+    </MudTooltip>
+</div>
+
+<style>
+    .fixed-bottom-right {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .content-container {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+</style>
 @code {
     public string email { get; set; }
     public Seller seller { get; set; }

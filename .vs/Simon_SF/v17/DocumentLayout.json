@@ -3,6 +3,22 @@
   "WorkspaceRootPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7BCF61D4-70D5-4B85-A1B8-CA0A6C416679}|Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj|c:\\users\\usuario\\documents\\simon-sf\\simon_sf\\simon_sf.client\\pages\\paydetails.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7BCF61D4-70D5-4B85-A1B8-CA0A6C416679}|Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj|solutionrelative:simon_sf\\simon_sf.client\\pages\\paydetails.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7BCF61D4-70D5-4B85-A1B8-CA0A6C416679}|Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj|c:\\users\\usuario\\documents\\simon-sf\\simon_sf\\simon_sf.client\\pages\\paylistvendedor.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7BCF61D4-70D5-4B85-A1B8-CA0A6C416679}|Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj|solutionrelative:simon_sf\\simon_sf.client\\pages\\paylistvendedor.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6BD13FE6-53E6-4771-9670-B8C5393B7004}|Repository\\Repository.csproj|c:\\users\\usuario\\documents\\simon-sf\\repository\\paymentrepository .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6BD13FE6-53E6-4771-9670-B8C5393B7004}|Repository\\Repository.csproj|solutionrelative:repository\\paymentrepository .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6BD13FE6-53E6-4771-9670-B8C5393B7004}|Repository\\Repository.csproj|c:\\users\\usuario\\documents\\simon-sf\\repository\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6BD13FE6-53E6-4771-9670-B8C5393B7004}|Repository\\Repository.csproj|solutionrelative:repository\\orderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7BCF61D4-70D5-4B85-A1B8-CA0A6C416679}|Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj|c:\\users\\usuario\\documents\\simon-sf\\simon_sf\\simon_sf.client\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7BCF61D4-70D5-4B85-A1B8-CA0A6C416679}|Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj|solutionrelative:simon_sf\\simon_sf.client\\services\\orderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -75,19 +91,71 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "PayDetails.razor",
+              "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Pages\\PayDetails.razor",
+              "RelativeDocumentMoniker": "Simon_SF\\Simon_SF.Client\\Pages\\PayDetails.razor",
+              "ToolTip": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Pages\\PayDetails.razor",
+              "RelativeToolTip": "Simon_SF\\Simon_SF.Client\\Pages\\PayDetails.razor",
+              "ViewState": "AgIAAKsAAAAAAAAAAAAAAHcAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-17T20:29:10.462Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PayListVendedor.razor",
+              "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Pages\\PayListVendedor.razor",
+              "RelativeDocumentMoniker": "Simon_SF\\Simon_SF.Client\\Pages\\PayListVendedor.razor",
+              "ToolTip": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Pages\\PayListVendedor.razor",
+              "RelativeToolTip": "Simon_SF\\Simon_SF.Client\\Pages\\PayListVendedor.razor",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAwwGUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-17T20:23:28.831Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PaymentRepository .cs",
+              "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\PaymentRepository .cs",
+              "RelativeDocumentMoniker": "Repository\\PaymentRepository .cs",
+              "ToolTip": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\PaymentRepository .cs",
+              "RelativeToolTip": "Repository\\PaymentRepository .cs",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAYwFIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T20:05:29.871Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OrderRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\OrderRepository.cs",
+              "RelativeDocumentMoniker": "Repository\\OrderRepository.cs",
+              "ToolTip": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\OrderRepository.cs",
+              "RelativeToolTip": "Repository\\OrderRepository.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAAACYAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-17T19:52:04.585Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "OrderService.cs",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Services\\OrderService.cs",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF.Client\\Services\\OrderService.cs",
               "ToolTip": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Services\\OrderService.cs",
               "RelativeToolTip": "Simon_SF\\Simon_SF.Client\\Services\\OrderService.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAYwAwAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAYwCcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-15T19:52:00.192Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "OrderDetails.razor",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Pages\\OrderDetails.razor",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF.Client\\Pages\\OrderDetails.razor",
@@ -95,12 +163,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF.Client\\Pages\\OrderDetails.razor",
               "ViewState": "AgIAAEcBAAAAAAAAAAAAAF4BAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:51:11.169Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:51:11.169Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "OrdersList.razor",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Pages\\OrdersList.razor",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF.Client\\Pages\\OrdersList.razor",
@@ -108,12 +175,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF.Client\\Pages\\OrdersList.razor",
               "ViewState": "AgIAACQAAAAAAAAAAAAAABIAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:49:54.61Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:49:54.61Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 9,
               "Title": "ResendEmailConfirmation.razor",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Components\\Account\\Pages\\ResendEmailConfirmation.razor",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF\\Components\\Account\\Pages\\ResendEmailConfirmation.razor",
@@ -121,12 +187,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF\\Components\\Account\\Pages\\ResendEmailConfirmation.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:46:53.761Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:46:53.761Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
               "Title": "ConfirmEmail.razor",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Components\\Account\\Pages\\ConfirmEmail.razor",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF\\Components\\Account\\Pages\\ConfirmEmail.razor",
@@ -134,12 +199,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF\\Components\\Account\\Pages\\ConfirmEmail.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:45:32.21Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:45:32.21Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
               "Title": "RegisterConfirmation.razor",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Components\\Account\\Pages\\RegisterConfirmation.razor",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF\\Components\\Account\\Pages\\RegisterConfirmation.razor",
@@ -147,12 +211,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF\\Components\\Account\\Pages\\RegisterConfirmation.razor",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABwAAABLAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:41:33.849Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:41:33.849Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 8,
               "Title": "Register.razor",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Components\\Account\\Pages\\Register.razor",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF\\Components\\Account\\Pages\\Register.razor",
@@ -160,12 +223,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF\\Components\\Account\\Pages\\Register.razor",
               "ViewState": "AgIAAMsAAAAAAAAAAAAAANwAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:04:12.376Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:04:12.376Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "MainLayout.razor",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Layout\\MainLayout.razor",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF.Client\\Layout\\MainLayout.razor",
@@ -173,12 +235,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF.Client\\Layout\\MainLayout.razor",
               "ViewState": "AgIAAA0AAAAAAAAAAAAUwBkAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:23:52.474Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:23:52.474Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "ResponsiveLayout.razor",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Layout\\ResponsiveLayout.razor",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF.Client\\Layout\\ResponsiveLayout.razor",
@@ -186,12 +247,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF.Client\\Layout\\ResponsiveLayout.razor",
               "ViewState": "AgIAAHgAAAAAAAAAAAAAAIQAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:23:46.019Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:23:46.019Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 13,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF.Client\\Layout\\NavMenu.razor",
@@ -199,12 +259,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF.Client\\Layout\\NavMenu.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:23:42.153Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:23:42.153Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 14,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\appsettings.json",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF\\appsettings.json",
@@ -212,12 +271,11 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-02-15T19:08:44.204Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T19:08:44.204Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 15,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Program.cs",
               "RelativeDocumentMoniker": "Simon_SF\\Simon_SF\\Program.cs",
@@ -225,8 +283,7 @@
               "RelativeToolTip": "Simon_SF\\Simon_SF\\Program.cs",
               "ViewState": "AgIAADUAAAAAAAAAAAAswEYAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T18:34:18.327Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-15T18:34:18.327Z"
             }
           ]
         },
