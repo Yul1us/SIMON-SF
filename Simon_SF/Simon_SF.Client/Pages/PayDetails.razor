@@ -17,7 +17,7 @@
 @inject IPaymentService PayOrderService
 @inject IOrderService orderservice
 @inject ISnackbar Snackbar
-
+@inject HttpClient Http
 @* Atributos de Autorización *@
 @attribute [Authorize]
 
@@ -63,6 +63,7 @@
                                 </span>
                             }
                         </div>
+            
                     </div>
 
                     @* Botones para guardar o cancelar *@
@@ -93,7 +94,7 @@
                             </AuthorizeView>
                         </div>
                     </div>
-
+           
                     @* Información de tasa y fecha *@
                     <div class="row mb-4">
                         <div class="col-md-6">
@@ -123,9 +124,21 @@
                                             <option value="@item.Id">@item.TxtApellidos</option>
                                         }
                                     </InputSelect>
-                                    <button class="btn btn-outline-primary" @onclick="AddClient" disabled="@(Order.Status > 2)">
-                                        <i class="bi bi-plus"></i> 
-                                    </button>
+                                    <AuthorizeView Roles="Vendedor">
+                                        <Authorized Context="authVendedorContext">
+                                            <button class="btn btn-outline-primary" @onclick="AddClientVendedor" disabled="@(Order.Status > 2)">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                    <AuthorizeView Roles="Administrador,Coordinador">
+                                        <Authorized Context="authContext">
+                                            <button class="btn btn-outline-primary" @onclick="AddClient" disabled="@(Order.Status > 2)">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                  
                                 </div>
                             </div>
                         </div>
@@ -196,7 +209,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">Comentarios</label>
-                                <InputTextArea class="form-control" @bind-Value="@Order.Comentario"></InputTextArea>
+                                <InputTextArea @bind-Value="@Order.Comentario" class="form-control" placeholder="Comentarios adicionales..." />
                             </div>
                         </div>
                     </div>
@@ -226,7 +239,28 @@
                 </div>
             </div>
         </div>
+        <br/>
+        <section class="mb-4 text-center">
+            <AuthorizeView Roles="Administrador,Coordinador,Vendedor">
+                <Authorized Context="authVendedorContext">
+                    <button type="button" class="btn btn-primary" @onclick="ViewPdf" hidden="@(Order?.Id <= 0)">
+                        <i class="bi bi-file-earmark-pdf"></i> Ver PDF
+                    </button>
+                </Authorized>
+            </AuthorizeView>
+        </section>
     </EditForm>
+    @if (!string.IsNullOrEmpty(pdfUrl))
+    {
+        <div class="card mt-4 shadow-lg">
+            <div class="card-header bg-primary text-white">
+                Vista previa del PDF
+            </div>
+            <div class="card-body p-0">
+                <iframe src="@pdfUrl" style="width: 100%; height: 80vh; border: none; border-radius: 0 0 5px 5px;"></iframe>
+            </div>
+        </div>
+    }
 }
 else
 {
@@ -251,7 +285,7 @@ else
     public string Message { get; set; }
     public string? imagenPost { get; set; }
     public DateTime Fecha_Creacion { get; set; }
-
+    public string pdfUrl { get; set; }
     [Parameter] public int id { get; set; }
     [Parameter] public EventCallback<string> OnChange { get; set; }
 
@@ -259,13 +293,14 @@ else
     {
         try
         {
-            Moneda = "$";
+
             Banks = await BankSercice.GetAll();
             clients = await ClientService.GetAll();
 
             if (id > 0)
             {
                 Order = await PayOrderService.GetDetails(id);
+                Moneda1 = Order.Sg_Moneda;
                 imagenPost = Order.ImageUrl;
                 Order.Debe.ToString("N2", new System.Globalization.CultureInfo("es-ES"));
             }
@@ -273,6 +308,7 @@ else
             {
                 Order = new payment()
                     {
+                        Sg_Moneda = "$",
                         Fecha_Creacion = DateTime.Now,
                         Haber = 0,
                         Status = 1,
@@ -318,11 +354,11 @@ else
         // Conversión de monto según la moneda seleccionada
         if (Moneda1 == "Bs")
         {
-            Order.Monto_Divisa = Order.Debe / Order.Tasa; // Convertir a dólares
+            Order.Monto_Divisa = Math.Round(Order.Debe / Order.Tasa, 2); // Convertir a dólares y redondear a 2 decimales
         }
         else
         {
-            Order.Debe = Order.Monto_Divisa * Order.Tasa; // Convertir a bolívares
+            Order.Debe = Math.Round(Order.Monto_Divisa * Order.Tasa, 2); // Convertir a bolívares y redondear a 2 decimales
         }
 
         await PayOrderService.SavePayOrder(Order);
@@ -435,5 +471,50 @@ else
             // Convertir el total a dólares si es necesario
           
         }
+    }
+    private async Task ViewPdf()
+    {
+        if (Order?.Id > 0)
+        {
+            // Enviar la solicitud al servidor para generar el PDF
+            var response = await Http.PostAsJsonAsync("https://localhost:7238/api/pdf/receipt", Order);
+            if (response.IsSuccessStatusCode)
+            {
+                var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+                var base64Pdf = Convert.ToBase64String(pdfBytes);
+                pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
+            }
+            else
+            {
+                Snackbar.Add("Error al generar el PDF.", Severity.Error);
+            }
+        }
+        else
+        {
+            Snackbar.Add("La orden no ha sido guardada.", Severity.Warning);
+        }
+    }
+    protected async Task AddClientVendedor()
+    {
+        //Se le pasa el Componente de Blazor donde colocamos todo para ingresar el producto... -> "ProductDetails"
+        //Se envia los parametros por el -> [CascadingParameter] del Componente -> ProductDetalis
+
+        var dialog = DialogService.Show<ClientDetailsVendedor>("ClientDetailsVendedor");
+        var result = await dialog.Result;
+        // Si el usuario no Cancelo... el Formulario Pop Pup
+        if (!result.Canceled)
+        {
+     
+
+            var cliente = (Costumer)result.Data;
+            Order.Cod_Beneficiario = cliente.Id.ToString();
+            Order.Usuario = cliente.TxtApenomb;
+            Order.Beneficiario = cliente.TxtApellidos;
+
+        }
+
+
+
+
     }
 }

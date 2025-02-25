@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+b2pZ2nahYg=",
+  "dgSpecHash": "qOOTWZcIL9Q=",
   "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Simon_SF.csproj",
   "expectedPackageFiles": [
@@ -80,6 +80,7 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\mimekit\\4.9.0\\mimekit.4.9.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\mudblazor\\7.15.0\\mudblazor.7.15.0.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\questpdf\\2025.1.2\\questpdf.2025.1.2.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\swashbuckle.aspnetcore\\7.2.0\\swashbuckle.aspnetcore.7.2.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\7.2.0\\swashbuckle.aspnetcore.swagger.7.2.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\7.2.0\\swashbuckle.aspnetcore.swaggergen.7.2.0.nupkg.sha512",

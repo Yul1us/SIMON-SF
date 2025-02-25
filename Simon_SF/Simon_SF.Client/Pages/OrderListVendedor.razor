@@ -5,6 +5,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ISellerService SellerServices
 @inject IOrderService OrderService
+@inject SweetAlertService SweetAlertService
 @* Como debemos navegar hasta la pagina de las ordenes... *@
 @inject NavigationManager NavigationManager
 @attribute [Authorize(Roles = "Vendedor")]
@@ -213,11 +214,21 @@ else
     }
 
     //Metodo para Eliminar una Orden.
-    protected async Task Delete(int id)
+    private async Task Delete(int id)
     {
-        await OrderService.DeleteOrder(id); //Se Borra de la BD
-        Orders.RemoveAll(p => p.Id == id);  //Se Borra de la Pantalla
+        var result = await SweetAlertService.ShowConfirmationDialog("¿Estás seguro que desea eliminar esta orden?", "Esta acción no se puede deshacer.");
+        Console.WriteLine(result);
+        if (result) // Si el usuario confirma
+        {
+            await OrderService.DeleteOrder(id);
+            Orders.RemoveAll(p => p.Id == id);
+        }
+        else
+        {
+            Console.WriteLine("se cancelo");
+        }
     }
+
     private void NavigateToOtherPage()
     {
         NavigationManager.NavigateTo("/OrderDetails"); // Cambia "/new-page" por la ruta de la página a la que quieres redirigir }

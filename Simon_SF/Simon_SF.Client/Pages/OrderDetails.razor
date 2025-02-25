@@ -14,6 +14,8 @@
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 @inject ISellerService SellerServices
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
 @* Seguridad para la página *@
 @attribute [Authorize]
 
@@ -72,7 +74,8 @@
                                 </Authorized>
                             </AuthorizeView>
 
-                        </div>
+                        </div>      
+                    
                     </div>
 
 
@@ -80,6 +83,16 @@
 
                     <p>Fecha: @Order.Fecha_Dia?.ToString("dd/MM/yyyy")</p>
                     <p>Tasa: @Order.Tasa_Cambio</p>
+                    <section class="mb-4 text-center">
+                        <AuthorizeView Roles="Administrador,Coordinador,Vendedor">
+                            <Authorized Context="authVendedorContext">
+                                <button type="button" class="btn btn-primary" @onclick="ViewPdf" hidden="@(Order?.Id <= 0)">
+                                    <i class="bi bi-file-earmark-pdf"></i> Ver PDF
+                                </button>
+                            </Authorized>
+                        </AuthorizeView>
+                    </section>
+             
                     <AuthorizeView Roles="Administrador">
                         <Authorized Context="authContext">
                             @if (cliente is not null)
@@ -103,10 +116,10 @@
                         }
                     </style>
 
-                   
-                  
+             
                     @* Fila 2: Información principal de la orden *@
                     <div class="row mb-4">
+          
                         <div class="d-flex">
                             <div class="me-3" style="flex: 1;">
                                 <label for="orderNumber" class="form-label">Número de Orden</label>
@@ -133,15 +146,27 @@
                             <label for="clientSelect" class="form-label">Cliente</label>
                             <div class="d-flex align-items-center">
                                 <InputSelect id="clientSelect" class="form-control" @onchange="OnClientChanged" @bind-Value="@Order.ClientId" disabled>
+
+                                    <option value=""> Selecione una opcion</option>
                                     @foreach (var item in clients)
                                     {
                                         <option value="@item.Id">@(item.TxtApellidos)</option>
                                     }
                                 </InputSelect>
+                                <AuthorizeView Roles="Administrador,Coordinador">
+                                    <Authorized Context="authContext">
+                                        <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Primary" @onclick="AddClient" class="ms-2" Disabled="@(Order.Status> 2)" />
 
+                                    </Authorized>
+                                </AuthorizeView>
+                                <AuthorizeView Roles="Vendedor">
+                                    <Authorized Context="authContext">
+                                        <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Primary" @onclick="AddClientVendedor" class="ms-2" Disabled="@(Order.Status> 2)" />
 
-                                <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Primary" @onclick="AddClient" class="ms-2" Disabled="@(Order.Status> 2)"  />
-                            </div>
+                                    </Authorized>
+                                </AuthorizeView>
+
+                                 </div>
                         </div>
                     </div>
 
@@ -158,9 +183,9 @@
                         </div>
                     </div>
 
-                    <InputTextArea @bind-Value="@Order.Comentario" class="form-control mt-3 mb-3"></InputTextArea>
+                    <InputTextArea @bind-Value="@Order.Comentario" class="form-control" placeholder="Comentarios adicionales..." />
 
-
+                    <br/>
                     @* Fila 5: Botón para agregar productos *@
                     @if (Order.ClientId is null)
                 {
@@ -259,6 +284,8 @@
             </div>
         </div>
     </EditForm>
+    @* Botón para ver el PDF *@
+ 
 }
 else
 {
@@ -295,6 +322,18 @@ else
             margin-right: 0.5rem;
         }
 </style>
+@if (!string.IsNullOrEmpty(pdfUrl))
+{
+    <div class="card mt-4 shadow-lg">
+        <div class="card-header bg-primary text-white">
+            Vista previa del PDF
+        </div>
+        <div class="card-body p-0">
+            <iframe src="@pdfUrl" style="width: 100%; height: 80vh; border: none; border-radius: 0 0 5px 5px;"></iframe>
+        </div>
+    </div>
+}
+
 @code {
     //Declaracion de las Variables...
     // Debemos binder un objeto
@@ -305,7 +344,7 @@ else
     //public IEnumerable<Product> products;
     //Colecion de Clientes -> Client
     private Tasa tasa;
-  
+    public string pdfUrl { get; set; }
 
     public IEnumerable<Costumer> clients;
     public decimal total { get; set; }
@@ -555,6 +594,31 @@ else
 
 
     }
+    protected async Task AddClientVendedor()
+    {
+        //Se le pasa el Componente de Blazor donde colocamos todo para ingresar el producto... -> "ProductDetails"
+        //Se envia los parametros por el -> [CascadingParameter] del Componente -> ProductDetalis
+
+        var dialog = DialogService.Show<ClientDetailsVendedor>("ClientDetailsVendedor");
+        var result = await dialog.Result;
+        // Si el usuario no Cancelo... el Formulario Pop Pup
+        if (!result.Canceled)
+        {
+            cliente = (Costumer)result.Data;
+
+
+            Order.ClientId = cliente.Id;
+            Order.IdTpCliente = cliente.Num_Tipo_Cliente;
+            Order.IdTpPrecio = cliente.Tipo_Precio;
+            Order.Products?.Clear();
+            total = 0;
+
+        }
+
+
+
+
+    }
     private void OnClientChanged(ChangeEventArgs e)
     {
         // El nuevo valor del cliente seleccionado
@@ -576,15 +640,7 @@ else
     }
 
 
-    protected async Task ProductHasChanged( DateTime fecha )
-    {
-
-        Console.WriteLine(Order.OrderDate);
-        tasa = await OrderService.GetTasa(Order.OrderDate);
-        Order.Tasa_Cambio = tasa.Valor;
-        Order.Fecha_Dia = tasa.Dia;
-
-    }
+  
     private async Task RefreshTasa(DateTime fecha)
     {
         try
@@ -601,6 +657,29 @@ else
         catch (Exception ex)
         {
             Snackbar.Add($"Error al actualizar la tasa: {ex.Message}", Severity.Error);
+        }
+    }
+    // Método para ver el PDF
+    private async Task ViewPdf()
+    {
+        if (Order?.Id > 0)
+        {
+            // Enviar la solicitud al servidor para generar el PDF
+            var response = await Http.PostAsJsonAsync("https://localhost:7238/api/pdf/invoice", Order);
+            if (response.IsSuccessStatusCode)
+            {
+                var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+                var base64Pdf = Convert.ToBase64String(pdfBytes);
+                pdfUrl = $"data:application/pdf;base64,{base64Pdf}";
+            }
+            else
+            {
+                Snackbar.Add("Error al generar el PDF.", Severity.Error);
+            }
+        }
+        else
+        {
+            Snackbar.Add("La orden no ha sido guardada.", Severity.Warning);
         }
     }
 }

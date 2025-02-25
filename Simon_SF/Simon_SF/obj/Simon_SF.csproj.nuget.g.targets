@@ -7,6 +7,7 @@
     <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.components.analyzers\8.0.10\buildTransitive\netstandard2.0\Microsoft.AspNetCore.Components.Analyzers.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.components.analyzers\8.0.10\buildTransitive\netstandard2.0\Microsoft.AspNetCore.Components.Analyzers.targets')" />
     <Import Project="$(NuGetPackageRoot)mudblazor\7.15.0\build\MudBlazor.targets" Condition="Exists('$(NuGetPackageRoot)mudblazor\7.15.0\build\MudBlazor.targets')" />
     <Import Project="$(NuGetPackageRoot)microsoft.extensions.configuration.binder\8.0.2\buildTransitive\netstandard2.0\Microsoft.Extensions.Configuration.Binder.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.extensions.configuration.binder\8.0.2\buildTransitive\netstandard2.0\Microsoft.Extensions.Configuration.Binder.targets')" />
+    <Import Project="$(NuGetPackageRoot)questpdf\2025.1.2\buildTransitive\QuestPDF.targets" Condition="Exists('$(NuGetPackageRoot)questpdf\2025.1.2\buildTransitive\QuestPDF.targets')" />
     <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.components.webassembly.server\8.0.10\build\Microsoft.AspNetCore.Components.WebAssembly.Server.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.components.webassembly.server\8.0.10\build\Microsoft.AspNetCore.Components.WebAssembly.Server.targets')" />
   </ImportGroup>
 </Project>
