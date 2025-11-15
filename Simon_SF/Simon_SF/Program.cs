@@ -18,9 +18,10 @@ using Repository;
 using Microsoft.OpenApi.Models;
 using Shared;
 using System.Reflection;
+using QuestPDF.Infrastructure;
 
 
-
+QuestPDF.Settings.License = LicenseType.Community; // Agrega esta línea
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMudServices();
 // Add services to the container.
@@ -51,7 +52,8 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
-
+builder.Services.AddScoped<PdfRecibo>();
+builder.Services.AddScoped<PdfService>();
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 //Injectar Los Repositorios al Contenedor de Dependencias...de ProductCategoryRepository
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();

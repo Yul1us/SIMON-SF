@@ -24,6 +24,11 @@ namespace Blazor.SIMONStore.Client.Services
             return await _httpClient.GetFromJsonAsync<IEnumerable<Costumer>> ($"api/costumer");
         }
 
+        public async Task<IEnumerable<Costumer>> GetBySeller(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<Costumer>>($"api/costumer/seller/{id}");
+        }
+
         public async Task<Costumer> GetDetails(int? id)
         {
             return await _httpClient.GetFromJsonAsync<Costumer>($"api/costumer/{id}");

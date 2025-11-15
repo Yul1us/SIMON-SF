@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF\\Simon_SF.csproj": {}
+    "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Simon_SF.csproj": {}
   },
   "projects": {
-    "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Repository\\Repository.csproj": {
+    "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\Repository.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Repository\\Repository.csproj",
+        "projectUniqueName": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\Repository.csproj",
         "projectName": "Repository",
-        "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Repository\\Repository.csproj",
-        "packagesPath": "C:\\Users\\JULIO\\.nuget\\packages\\",
-        "outputPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Repository\\obj\\",
+        "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\Repository.csproj",
+        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\JULIO\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -33,8 +29,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj": {
-                "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj"
+              "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj"
               }
             }
           }
@@ -48,8 +44,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -76,25 +71,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj": {
+    "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj",
+        "projectUniqueName": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj",
         "projectName": "Shared",
-        "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj",
-        "packagesPath": "C:\\Users\\JULIO\\.nuget\\packages\\",
-        "outputPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\obj\\",
+        "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj",
+        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\JULIO\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -120,8 +111,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -142,25 +132,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj": {
+    "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj",
+        "projectUniqueName": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj",
         "projectName": "Simon_SF.Client",
-        "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj",
-        "packagesPath": "C:\\Users\\JULIO\\.nuget\\packages\\",
-        "outputPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\obj\\",
+        "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj",
+        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\JULIO\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -175,8 +161,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj": {
-                "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj"
+              "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj"
               }
             }
           }
@@ -190,8 +176,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -214,7 +199,7 @@
             "Microsoft.NET.Sdk.WebAssembly.Pack": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.2, )",
+              "version": "[8.0.13, )",
               "autoReferenced": true
             },
             "MudBlazor": {
@@ -244,7 +229,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
@@ -253,21 +238,17 @@
         }
       }
     },
-    "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF\\Simon_SF.csproj": {
+    "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Simon_SF.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF\\Simon_SF.csproj",
+        "projectUniqueName": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Simon_SF.csproj",
         "projectName": "Simon_SF",
-        "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF\\Simon_SF.csproj",
-        "packagesPath": "C:\\Users\\JULIO\\.nuget\\packages\\",
-        "outputPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF\\obj\\",
+        "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\Simon_SF.csproj",
+        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\JULIO\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -282,14 +263,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Repository\\Repository.csproj": {
-                "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Repository\\Repository.csproj"
+              "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\Repository.csproj": {
+                "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Repository\\Repository.csproj"
               },
-              "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj": {
-                "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Shared\\Shared.csproj"
+              "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj": {
+                "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Shared\\Shared.csproj"
               },
-              "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj": {
-                "projectPath": "F:\\OneDrive\\SMO_DEV_01\\Simon_SF_V2_GITHUB\\Simon_SF_V2\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj"
+              "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj": {
+                "projectPath": "C:\\Users\\Usuario\\Documents\\SIMON-SF\\Simon_SF\\Simon_SF.Client\\Simon_SF.Client.csproj"
               }
             }
           }
@@ -303,8 +284,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -342,6 +322,10 @@
               "target": "Package",
               "version": "[7.15.0, )"
             },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2025.1.2, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[7.2.0, )"
@@ -366,7 +350,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

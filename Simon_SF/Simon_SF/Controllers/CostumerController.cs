@@ -24,6 +24,12 @@ namespace BlazorApp3.Controllers
         {
             return await _costumner.GetAll();
         }
+        [HttpGet("Seller/{id}")]
+
+        public async Task<IEnumerable<Costumer>> GetBySeller(int id)
+        {
+            return await _costumner.GetBySeller(id);
+        }
         [HttpGet("{id}")]
         public async Task<Costumer> GetDetails(int id)
         {

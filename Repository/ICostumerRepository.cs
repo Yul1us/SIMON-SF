@@ -10,6 +10,7 @@ namespace Blazor.SIMONStore.Repositories
     public interface ICostumerRepository
     {
         Task<IEnumerable<Costumer>> GetAll();
+        Task<IEnumerable<Costumer>> GetBySeller(int id);
         Task<Costumer> GetDetail(int id);
     }
 }

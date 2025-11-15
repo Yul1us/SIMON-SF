@@ -24,17 +24,27 @@ namespace Blazor.SIMONStore.Repositories
 
         public async Task DeleteOrder(int id)
         {
-            //Paso1: La Consulta de Acción Usando Dapper
-            var sql = @"
-                        DELETE FROM Orders
-                        WHERE Id = @Id ";
+            ////Paso1: La Consulta de Acción Usando Dapper
+            //var sql = @"
+            //            DELETE FROM Orders
+            //            WHERE Id = @Id ";
 
 
-            //Paso2: Como es un DELETE -> Se usa ExecuteAsync
+            ////Paso2: Como es un DELETE -> Se usa ExecuteAsync
+            ////ya que ExecuteAsync Retorna el Numero de Filas Afectadas...
+            ////No hace falta el Retorn, y no retotnaremos nada, ya que estamos en un Task.
+            //await _dbConnection.ExecuteAsync(sql, 
+            //    new {Id = @id });
+            //Paso1: La Consulta Usando Dapper
+            var sql = @" UPDATE Orders SET Status = 9 WHERE Id = @Id";
+
+            //Paso2: Como es un INSERT -> Se usa ExecuteAsync
             //ya que ExecuteAsync Retorna el Numero de Filas Afectadas...
-            //No hace falta el Retorn, y no retotnaremos nada, ya que estamos en un Task.
-            await _dbConnection.ExecuteAsync(sql, 
-                new {Id = @id });
+            await _dbConnection.ExecuteAsync(sql,
+            new { Id = @id });
+            //Como Task<bool> entonces se evalua y retorna un true o false -> return result > 0;
+            //El ExecuteAsync siempre retorna el numero de filas afectadas...
+          
 
         }
 
@@ -60,8 +70,8 @@ namespace Blazor.SIMONStore.Repositories
                           ,Fecha_Dia
                           ,id_moneda_cambio
                           ,Tasa_Cambio
-                       FROM Orders 
-                       ORDER BY Id DESC";
+                       FROM Orders WHERE Status != 9
+                       ORDER BY Id DESC ";
             return await _dbConnection.QueryAsync<Order>(sql, new { });
         }
 
@@ -85,8 +95,8 @@ namespace Blazor.SIMONStore.Repositories
                               ,Fecha_Dia
                               ,id_moneda_cambio
                               ,Tasa_Cambio
-                       FROM Orders AS O INNER JOIN Clients AS C ON O.ClientId = C.Id WHERE O.ClientId = @Id
-                       ORDER BY O.Id DESC ";
+                       FROM Orders AS O INNER JOIN Clients AS C ON O.ClientId = C.Id WHERE O.ClientId = @Id AND  Status != 9
+                       ORDER BY O.Id DESC  ";
             return await _dbConnection.QueryAsync<Order>(sql, new { Id = id });
         }
 
@@ -112,8 +122,8 @@ namespace Blazor.SIMONStore.Repositories
                           ,Fecha_Dia
                           ,id_moneda_cambio
                           ,Tasa_Cambio
-                       FROM Orders WHERE IdVendedor = @Id
-                       ORDER BY Id DESC ";
+                       FROM Orders WHERE IdVendedor = @Id AND Status != 9 
+                       ORDER BY Id DESC   ";
             return await _dbConnection.QueryAsync<Order>(sql, new { Id = id });
         }
 
@@ -141,7 +151,7 @@ namespace Blazor.SIMONStore.Repositories
                           ,id_moneda_cambio
                           ,Tasa_Cambio
                        FROM Orders 
-                       WHERE Id=@Id ";
+                       WHERE Id=@Id  AND Status != 9 ";
             return await _dbConnection.QueryFirstOrDefaultAsync<Order>(sql, 
                 new { Id = id });
         }

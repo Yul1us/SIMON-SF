@@ -16,7 +16,7 @@
     {
         <MudTable Items="@Orders" Hover="true" Breakpoint="Breakpoint.Sm" Class="mb-4">
             <ToolBarContent>
-                <MudText Typo="Typo.h6">Listado de Órdenes</MudText>
+                <MudText Typo="Typo.h6">Listado de Ordenes</MudText>
             </ToolBarContent>
             
             <HeaderContent>
@@ -39,6 +39,7 @@
                     @OrderContext.Total.ToString("N2", new System.Globalization.CultureInfo("es-ES")) $
                 </MudTd>
                 <MudTd DataLabel="Fecha Pedido">@OrderContext.OrderDate.ToString("dd/MM/yyyy")</MudTd>
+             
                 <MudTd DataLabel="Fecha Entrega">
                     @if (OrderContext.Status > 2)
                     {

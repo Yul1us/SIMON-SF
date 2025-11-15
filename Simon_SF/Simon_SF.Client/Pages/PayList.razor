@@ -41,7 +41,16 @@
                 <RowTemplate Context="OrderContext">
                     <MudTd DataLabel="Nro.#" Class="text-center">@OrderContext.Id</MudTd>
                     <MudTd DataLabel="Cliente">@OrderContext.Beneficiario</MudTd>
-                    <MudTd DataLabel="Total" Class="text-right">@OrderContext.Monto_Divisa.ToString("N2", new System.Globalization.CultureInfo("es-ES"))</MudTd>
+                    @if (OrderContext.Sg_Moneda == "$")
+                {
+                        <MudTd DataLabel="Total" Class="text-right">@OrderContext.Monto_Divisa.ToString("N2", new System.Globalization.CultureInfo("es-ES")).$</MudTd>
+
+                    }
+                    else
+                    {
+                        <MudTd DataLabel="Total" Class="text-right">@OrderContext.Debe.ToString("N2", new System.Globalization.CultureInfo("es-ES")) .Bs</MudTd>
+
+                    }
                     <MudTd DataLabel="Tasa" Class="text-right">@OrderContext.Tasa.ToString("N2", new System.Globalization.CultureInfo("es-ES"))</MudTd>
                     <MudTd DataLabel="Fecha">@OrderContext.Fecha.ToString("dd/MM/yyyy")</MudTd>
                     <MudTd DataLabel="Vendedor">@OrderContext.Usuario</MudTd>

@@ -10,6 +10,7 @@ namespace Blazor.SIMONStore.Client.Services
         //Ojo se coloco todo completo -> Blazor.SIMONStore.Shared.Client
         //Ya que Client es una palabra reservada
         Task<IEnumerable<Costumer>> GetAll();
+        Task<IEnumerable<Costumer>> GetBySeller(int id);
         Task<Costumer> GetDetails(int? id);
     }
 }

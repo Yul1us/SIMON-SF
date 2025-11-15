@@ -1,0 +1,242 @@
+﻿@* Injectar los componntes *@
+
+@inject ICostumerService ClienteService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ISellerService SellerServices
+@using System.Linq;
+@using Blazor.SIMONStore.Client.Models
+@* Este servicio de MudBlazor, muestra un mensaje que indica si la operacion realizada fue exitosa o fallo... 
+    Es una notificacion que le aparece al usuario, para que este enterado...
+*@
+@inject ISnackbar Snackbar
+
+@* Usando MudBlazor *@
+<MudDialog>
+    <!-- Título del diálogo -->
+    <TitleContent>
+        <h3>Detalles del Cliente</h3>
+    </TitleContent>
+
+    <!-- Contenido principal -->
+    <DialogContent>
+        <EditForm Model="@Cliente">
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="container">
+                
+                        <!-- Buscar cliente -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="searchClient" class="form-label">Buscar Cliente </label>
+                                <InputText class="form-control" placeholder="Buscar...." @bind-Value="Search"></InputText>
+                            </div>
+                        </div>
+
+                        <!-- Lista de clientes -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-label">Clientes</label>
+                                <div class="client-list" style="height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;" @ref="clientList">
+                                    @if (FilteredClients.Any())
+                                    {
+                                        @foreach (var client in FilteredClients)
+                                        {
+                                            <div @key="client"
+                                                class="client-item" 
+                                                 style="padding: 8px; border-bottom: 1px solid #eee; cursor: pointer; background-color: @(Cliente.TxtApellidos == client.TxtApellidos ? "#87CEFA" : "transparent");" 
+                                                 @onclick="() => SelectClient(client)">
+                                                @client.TxtApellidos
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted text-center">No se encontraron clientes.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </DialogContent>
+
+    <!-- Acciones -->
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Text" Color="Color.Error">
+            Cancelar
+        </MudButton>
+
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    //Traernos los DropDown
+    public string email { get; set; }
+    public Seller seller { get; set; }
+    ElementReference clientList;
+    //Bindear un Objeto..
+    public Costumer Cliente = new Costumer();
+    // MulticastNotSupportedException si ocurre algún error
+    public string Message { get; set; }
+    public string Search { get; set; }
+    IEnumerable<Costumer> FilteredClients => string.IsNullOrEmpty(Search) ? Clientes : Clientes.Where(c => c.TxtApellidos.Contains(Search, StringComparison.OrdinalIgnoreCase));
+    //Aca se incorporan las Listas
+    public IEnumerable<Costumer> Clientes = new List<Costumer>();
+    //Colecion de Categorias -> Product
+
+
+    //Para resibir los parametros
+    //Se envian losparametros desde el componante -> var dialog = DialogService.Show<ProductDetails>("ProductDetails");
+    //de OrderDetails
+    [CascadingParameter]
+    //Una propiedad
+    MudDialogInstance MudDialog { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            //Carga las Categoria cuando se carga la Pagina, e inicializa todo...
+    
+            //Con esta Categoria por defecto, se deben cargar los productos pertenecientes a ella
+            //Para que el segundo DropDown no este vacio al cargar por primera ves
+            //productCategories.Any() -> si tiene algo y no es nulo
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                email = user.Identity.Name ?? "Email no disponible";
+
+
+
+            }
+            else
+            {
+                email = "No autenticado";
+            }
+
+            seller = await SellerServices.GetByEmail(user.Identity.Name!);
+            Clientes = await ClienteService.GetBySeller(seller.NumCodigo);
+            
+
+
+        }
+        catch (Exception e)
+        {
+
+            Message = "Error..." + e.Message;
+        }
+
+    }
+
+
+
+
+    //Para implementar los Dropdown, y capturar el Category Id, Cuando se dispara el Evento ValueChanged
+    /* protected async Task ProductCategoryHasChanged(int ClienteID)
+    {
+    //Aca la Idea es cargar los Productos... luego que se dispara el evento Changed ProductCategoryId...
+          // ValueExpression="@(() => Order.ProductCategoryId)" Es el Valor que se pasa.... a esta metodo...
+          Cliente.Id = ClienteID;
+
+
+          }
+
+
+
+          //Para implementar los Dropdown, y capturar el Id, Cuando se dispara el Evento ValueChanged
+          protected async Task ProductHasChanged(int productId)
+          {
+          //Aca la Idea es cargar los Productos... luego que se dispara el evento Changed ProductCategoryId...
+    // ValueExpression="@(() => Product.Id)" Es el Valor que se pasa.... a esta metodo...
+    Cliente.Id = productId;
+
+          //Validamos que tenga algo...
+    if (Cliente.Id > 0)
+    {
+    //Trae Todos los Detalles del Producto
+
+    }
+    }
+    */
+
+
+    //Finalmente el que carga un Producto en un metodo privado...
+    /* private async Task LoadProductDetails(int ClientID)
+          {
+          //Llama al Servicio... para cargar los Detalles del Producto
+    Cliente = ClienteDetails(ClientID);
+    Console.WriteLine("ClienteID" + ClientID);
+    }
+
+
+    private void AddProduct()
+    {
+    //Aca se usa la notificacion de MudBlazor llamada -> SnackBar
+      Snackbar.Add("Product added...", Severity.Success, a=>a.VisibleStateDuration=200);
+    //Envia los Parametros
+    MudDialog.Close(DialogResult.Ok(Cliente));
+
+        }
+        public Client ClienteDetails(int id)
+            {
+
+            foreach (var item in Clientes)
+    {
+      if (item.Id == id)
+     {
+     var cliente = item;
+    return cliente;
+    }
+    }
+
+    return null;
+
+    }
+    */
+    // private void RevomeProduct()
+    // {
+    //     //Aca se usa la notificacion de MudBlazor llamada -> SnackBar
+    //     Snackbar.Add("Product removed...", Severity.Error, a => a.VisibleStateDuration = 200);
+    //     //Envia los Parametros
+    //     MudDialog.Close(DialogResult.Ok(Product));
+
+    // }
+
+    private void AddCliente()
+    {
+        //Aca se usa la notificacion de MudBlazor llamada -> SnackBar
+        Snackbar.Add("Cliente added...", Severity.Success, a => a.VisibleStateDuration = 200);
+        //Envia los Parametros
+        MudDialog.Close(DialogResult.Ok(Cliente));
+
+    }
+    private void Cancel()
+    {
+        //Aca se usa la notificacion de MudBlazor llamada -> SnackBar
+        Snackbar.Add("Client Cancel...", Severity.Warning, a => a.VisibleStateDuration = 200);
+        //No Envia los Parametros
+        MudDialog.Cancel();
+    }
+    private Costumer SelectedClient;
+
+    private void SelectClient(Costumer client)
+    {
+        SelectedClient = client;
+
+        Cliente = SelectedClient;
+        AddCliente();
+        // Do something with the selected client, e.g., display details, update a form, etc.
+    }
+   
+
+  
+
+}
+@* Updated script for clarity and potential error handling *@
